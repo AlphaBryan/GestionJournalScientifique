@@ -1,5 +1,7 @@
 # Projet de Session : Gestion de journal scientifique
-Présentation du besoin
+
+## Présentation du besoin
+
 Un journal scientifique fait appel à votre équipe pour produire une solution en Java pour la gestion
 du processus de soumission et publication d’articles scientifiques soumis par des auteurs.
 Les articles sont soumis par catégories pour un numéro spécifique avant la date limite de
