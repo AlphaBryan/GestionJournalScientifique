@@ -11,6 +11,14 @@ services:
       - uqam-net
     ports:
       - 7000:7000
+  front:
+    image: node:18-alpine
+    container_name: front
+    working_dir: /app
+    volumes:
+      - ./web:/app
+    ports:
+      - 3000:3000
   database:
     image: mysql:8
     container_name: db
