@@ -1,0 +1,43 @@
+version: '3'
+
+services:
+  api:
+    image: maven:3-openjdk-18
+    container_name: api
+    working_dir: /app
+    volumes:
+      - ./api:/app
+    networks:
+      - uqam-net
+    ports:
+      - 7000:7000
+  database:
+    image: mysql:8
+    container_name: db
+    environment:
+      MYSQL_ROOT_PASSWORD: secret
+      MYSQL_DATABASE: api
+      MYSQL_USER: api
+      MYSQL_PASSWORD: secret
+    volumes:
+      - db-data:/var/lib/mysql
+    networks:
+      - uqam-net
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    container_name: pma
+    environment:
+      PMA_HOST: db
+      PMA_PORT: 3306
+      PMA_ARBITRARY: 1
+    networks:
+      - uqam-net
+    ports:
+      - 8081:80
+
+
+volumes:
+  db-data:
+
+networks:
+  uqam-net:
