@@ -15,7 +15,7 @@ const Topbar = () => {
       }}
     >
       <Toolbar>
-        <Typography variant="h6">Gestion de journal scientifique</Typography>
+        <Typography variant="h6">Gestion de journal scientifique </Typography>
       </Toolbar>
     </AppBar>
   );
