@@ -13,7 +13,7 @@ import GroupsIcon from "@mui/icons-material/Groups";
 import EmojiObjectsIcon from "@mui/icons-material/EmojiObjects";
 const user1 = { role: "Auteur" };
 const user2 = { role: "Evaluateur" };
-const user = user1;
+const user = user2;
 const AuteurRoutes: RouteType[] = [
   {
     index: true,
@@ -87,7 +87,7 @@ const EvaluateurRoutes: RouteType[] = [
     element: <MesEvaluations />,
     state: "mesEvaluations",
     sidebarProps: {
-      displayText: "MesEvaluations",
+      displayText: "Mes Evaluations",
       icon: <EmojiObjectsIcon />,
     },
   },

@@ -20,10 +20,30 @@ export default function ArticleCard(props: Props) {
         marginLeft: "5%",
         marginTop: "2%",
         marginBottom: "2%",
-        paddingBottom:"2%"
+        paddingBottom: "2%",
       }}
     >
       <CardContent>
+        {article?.evaluation === "Accepté" ? (
+          <Typography
+            gutterBottom
+            variant="caption"
+            component="div"
+            sx={{ fontWeight: 900, color: "green" }}
+          >
+            &#10004; Article accepté
+          </Typography>
+        ) : (
+          <Typography
+            gutterBottom
+            variant="caption"
+            component="div"
+            sx={{ fontWeight: 900, color: "red" }}
+          >
+            &#10006; Article Refusé
+          </Typography>
+        )}
+
         <Typography gutterBottom variant="h5" component="div">
           {article.title}
         </Typography>
