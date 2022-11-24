@@ -11,9 +11,15 @@ import Comite from "../pages/Evaluateur/Comite";
 import MesEvaluations from "../pages/Evaluateur/MesEvaluations";
 import GroupsIcon from "@mui/icons-material/Groups";
 import EmojiObjectsIcon from "@mui/icons-material/EmojiObjects";
+import Connexion from "../pages/Authentification/Connexion";
+import LoginIcon from "@mui/icons-material/Login";
+import Inscription from "../pages/Authentification/Inscription";
+import PersonAddIcon from "@mui/icons-material/PersonAdd";
 const user1 = { role: "Auteur" };
 const user2 = { role: "Evaluateur" };
-const user = user2;
+const user3 = null as any;
+const user = user3;
+
 const AuteurRoutes: RouteType[] = [
   {
     index: true,
@@ -93,11 +99,41 @@ const EvaluateurRoutes: RouteType[] = [
   },
 ];
 
+const NotConnectedRoutes: RouteType[] = [
+  {
+    index: true,
+    element: <HomePage />,
+    state: "home",
+  },
+  {
+    path: "/connexion",
+    element: <Connexion />,
+    state: "connexion",
+    sidebarProps: {
+      displayText: "Me connecter",
+      icon: <LoginIcon />,
+    },
+  },
+  {
+    path: "/inscription",
+    element: <Inscription />,
+    state: "inscription",
+    sidebarProps: {
+      displayText: "M'inscrire",
+      icon: <PersonAddIcon />,
+    },
+  },
+];
+
 const appRoutes: RouteType[] = [];
-if (user.role === "Auteur") {
-  appRoutes.push(...AuteurRoutes);
-} else if (user.role === "Evaluateur") {
-  appRoutes.push(...EvaluateurRoutes);
+if (!user?.role) {
+  appRoutes.push(...NotConnectedRoutes);
+} else {
+  if (user.role === "Auteur") {
+    appRoutes.push(...AuteurRoutes);
+  } else if (user.role === "Evaluateur") {
+    appRoutes.push(...EvaluateurRoutes);
+  }
 }
 
 export default appRoutes;
