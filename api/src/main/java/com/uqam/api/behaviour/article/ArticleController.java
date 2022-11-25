@@ -2,10 +2,7 @@ package com.uqam.api.behaviour.article;
 
 import com.uqam.api.dto.ArticleDTO;
 import com.uqam.api.mapper.ArticleDTOMapper;
-import com.uqam.api.model.dao.ArticleDAO;
-import com.uqam.api.model.dao.AuthorDAO;
-import com.uqam.api.model.dao.CategoryDAO;
-import com.uqam.api.model.dao.ScientificCommitteeDAO;
+import com.uqam.api.model.dao.*;
 import com.uqam.api.model.entity.*;
 import com.uqam.api.security.AuthenticatedAuthorFacade;
 import org.springframework.http.ResponseEntity;
@@ -22,6 +19,7 @@ public class ArticleController {
     private final AuthorDAO authorDAO;
     private final ArticleDAO articleDAO;
     private final ScientificCommitteeDAO scientificCommitteeDAO;
+    private final EditionDAO editionDAO;
     private final AuthenticatedAuthorFacade authenticatedAuthor;
     private final ArticleDTOMapper articleDTOMapper;
 
@@ -30,6 +28,7 @@ public class ArticleController {
             AuthorDAO authorDAO,
             ArticleDAO articleDAO,
             ScientificCommitteeDAO scientificCommitteeDAO,
+            EditionDAO editionDAO,
             AuthenticatedAuthorFacade authenticatedAuthor,
             ArticleDTOMapper articleDTOMapper
     ) {
@@ -37,6 +36,7 @@ public class ArticleController {
         this.authorDAO = authorDAO;
         this.articleDAO = articleDAO;
         this.scientificCommitteeDAO = scientificCommitteeDAO;
+        this.editionDAO = editionDAO;
         this.authenticatedAuthor = authenticatedAuthor;
         this.articleDTOMapper = articleDTOMapper;
     }
@@ -100,4 +100,16 @@ public class ArticleController {
         return ResponseEntity.ok().body(articleDTOS);
     }
 
+    @GetMapping("/edition/{editionId}/articles")
+    public ResponseEntity<List<ArticleDTO>> getEditionArticles(@PathVariable("editionId") Integer editionId) {
+        Optional<Edition> edition = editionDAO.findById(editionId);
+        if (edition.isEmpty()) return ResponseEntity.badRequest().build();
+
+        List<ArticleDTO> articleDTOS = new ArrayList<>();
+        for (Article article : edition.get().getArticles()) {
+            articleDTOS.add(articleDTOMapper.toArticleDTO(article));
+        }
+
+        return ResponseEntity.ok().body(articleDTOS);
+    }
 }
