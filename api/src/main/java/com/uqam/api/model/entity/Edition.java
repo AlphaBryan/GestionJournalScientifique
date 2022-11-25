@@ -25,4 +25,28 @@ public class Edition {
         this.name = name;
         this.submissionLimitDate = submissionLimitDate;
     }
+
+    public Integer getId() {
+        return id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public Timestamp getSubmissionLimitDate() {
+        return submissionLimitDate;
+    }
+
+    public void setSubmissionLimitDate(Timestamp submissionLimitDate) {
+        this.submissionLimitDate = submissionLimitDate;
+    }
+
+    public Set<Article> getArticles() {
+        return articles;
+    }
 }
