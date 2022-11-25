@@ -31,6 +31,10 @@ public class ScientificCommittee {
         return evaluators;
     }
 
+    public void setEvaluators(List<Evaluator> evaluators) {
+        this.evaluators = evaluators;
+    }
+
     public List<Article> getArticles() {
         return articles;
     }
