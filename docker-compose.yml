@@ -5,6 +5,7 @@ services:
     image: maven:3-openjdk-18
     container_name: api
     working_dir: /app
+    command: ./mvnw spring-boot:run
     volumes:
       - ./api:/app
     networks:
@@ -27,6 +28,8 @@ services:
       MYSQL_DATABASE: api
       MYSQL_USER: api
       MYSQL_PASSWORD: secret
+    ports:
+      - "3306:3306"
     volumes:
       - db-data:/var/lib/mysql
     networks:
