@@ -1,4 +1,11 @@
-import { Avatar, Drawer, List, Stack, Toolbar } from "@mui/material";
+import {
+  Avatar,
+  Drawer,
+  List,
+  Stack,
+  Toolbar,
+  Typography,
+} from "@mui/material";
 import assets from "../../assets";
 import colorConfigs from "../../configs/colorConfigs";
 import sizeConfigs from "../../configs/sizeConfigs";
@@ -7,6 +14,8 @@ import SidebarItem from "./SidebarItem";
 import SidebarItemCollapse from "./SidebarItemCollapse";
 
 const Sidebar = () => {
+  const user = { name: "Bryan Mevo", role: "Auteur" };
+
   return (
     <Drawer
       variant="permanent"
@@ -24,10 +33,29 @@ const Sidebar = () => {
     >
       <List disablePadding>
         <Toolbar sx={{ marginBottom: "20px" }}>
-          <Stack sx={{ width: "100%"}} direction="row" justifyContent="center">
-            <Avatar src={assets.images.logo} style={{ width: "60%" , padding:"15%" }} />
+          <Stack sx={{ width: "100%" }} direction="row" justifyContent="center">
+            <Avatar
+              src={assets.images.logo}
+              style={{ width: "60%", padding: "15%" }}
+            />
           </Stack>
         </Toolbar>
+        <div
+          style={{
+            marginBottom: "5%",
+          }}
+        >
+          <Typography
+            variant="caption"
+            style={{
+              fontWeight: "bold",
+              fontSize: "1.1rem",
+              marginLeft: "15%",
+            }}
+          >
+            {user.name} - {user.role}
+          </Typography>
+        </div>
         {appRoutes.map((route, index) =>
           route.sidebarProps ? (
             route.child ? (
