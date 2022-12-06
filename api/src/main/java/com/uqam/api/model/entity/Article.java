@@ -13,6 +13,8 @@ public class Article {
 
     private String title;
 
+    private Phase phase;
+
     @ManyToMany(targetEntity = Category.class)
     private Set<Category> categories;
 
@@ -21,6 +23,9 @@ public class Article {
 
     @OneToMany(targetEntity = Version.class, cascade = CascadeType.ALL)
     private List<Version> versions;
+
+    @ManyToOne(targetEntity = ScientificCommittee.class, fetch = FetchType.LAZY)
+    private ScientificCommittee scientificCommittee;
 
     protected Article() {
     }
@@ -32,6 +37,7 @@ public class Article {
         List<Version> versions = new ArrayList<>();
         versions.add(version);
         this.versions = versions;
+        this.phase = Phase.CREATED;
     }
 
     public Integer getId() {
@@ -52,5 +58,24 @@ public class Article {
 
     public List<Version> getVersions() {
         return versions;
+    }
+
+    public Phase getPhase() {
+        return phase;
+    }
+
+    public void setPhase(Phase phase) {
+        this.phase = phase;
+    }
+
+    public ScientificCommittee getScientificCommittee() {
+        return scientificCommittee;
+    }
+
+    public void setScientificCommittee(ScientificCommittee scientificCommittee) {
+        this.scientificCommittee = scientificCommittee;
+        if (scientificCommittee != null) {
+            this.phase = Phase.RELECTURE;
+        }
     }
 }
