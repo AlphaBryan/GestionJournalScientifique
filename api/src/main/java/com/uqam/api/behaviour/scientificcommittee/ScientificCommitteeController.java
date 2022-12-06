@@ -54,12 +54,13 @@ public class ScientificCommitteeController {
     @PostMapping("/")
     public ResponseEntity<CommitteeDTO> createCommittee(@RequestBody @Valid CreateCommitteeRequest request) {
         List<Evaluator> evaluators = new ArrayList<>();
+        System.out.println(request.getEvaluatorsId());
         for (Integer evaluatorId : request.getEvaluatorsId()) {
             Optional<Evaluator> evaluator = evaluatorDAO.findById(evaluatorId);
             if (evaluator.isEmpty()) return ResponseEntity.badRequest().build();
             evaluators.add(evaluator.get());
         }
-
+        System.out.println(evaluators);
         ScientificCommittee scientificCommittee = scientificCommitteeDAO.save(new ScientificCommittee(evaluators));
 
         return new ResponseEntity<>(committeeDTOMapper.toCommitteeDTO(scientificCommittee), HttpStatus.CREATED);

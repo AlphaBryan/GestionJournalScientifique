@@ -15,4 +15,16 @@ public class EditionDTO {
         this.name = name;
         this.submissionLimitDate = submissionLimitDate;
     }
+
+    public Integer getId() {
+        return id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public Timestamp getSubmissionLimitDate() {
+        return submissionLimitDate;
+    }
 }

@@ -11,4 +11,12 @@ public class CommitteeDTO {
         this.id = id;
         this.evaluators = evaluators;
     }
+
+    public Integer getId() {
+        return id;
+    }
+
+    public List<EvaluatorDTO> getEvaluators() {
+        return evaluators;
+    }
 }

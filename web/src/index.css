@@ -11,3 +11,16 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+h2 {
+  margin: 0;
+}
+
+.hover-btn:hover {
+  cursor: pointer;
+}
+
+.MuiTextField-root {
+  width: 100%;
+  margin-top: 20px !important;
+}

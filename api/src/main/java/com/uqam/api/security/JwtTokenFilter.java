@@ -1,8 +1,10 @@
 package com.uqam.api.security;
 
 
+import com.uqam.api.model.dao.AdministratorDAO;
 import com.uqam.api.model.dao.AuthorDAO;
 import com.uqam.api.model.dao.EvaluatorDAO;
+import com.uqam.api.model.entity.Administrator;
 import com.uqam.api.model.entity.Author;
 import com.uqam.api.model.entity.Evaluator;
 import org.springframework.http.HttpHeaders;
@@ -29,11 +31,13 @@ public class JwtTokenFilter extends OncePerRequestFilter {
     private final JwtTokenUtil jwtTokenUtil;
     private final AuthorDAO authorDAO;
     private final EvaluatorDAO evaluatorDAO;
+    private final AdministratorDAO administratorDAO;
 
-    public JwtTokenFilter(JwtTokenUtil jwtTokenUtil, AuthorDAO authorDAO, EvaluatorDAO evaluatorDAO) {
+    public JwtTokenFilter(JwtTokenUtil jwtTokenUtil, AuthorDAO authorDAO, EvaluatorDAO evaluatorDAO, AdministratorDAO administratorDAO) {
         this.jwtTokenUtil = jwtTokenUtil;
         this.authorDAO = authorDAO;
         this.evaluatorDAO = evaluatorDAO;
+        this.administratorDAO = administratorDAO;
     }
 
     @Override
@@ -72,6 +76,12 @@ public class JwtTokenFilter extends OncePerRequestFilter {
                 return;
             }
             userDetails = evaluator.get().toUserDetails();
+        } else if (role == Role.ADMINISTRATOR) {
+            Optional<Administrator> administrator = administratorDAO.findByEmail(jwtTokenUtil.getUsernameFromToken(token));
+            if (administrator.isEmpty()) {
+                return;
+            }
+            userDetails = administrator.get().toUserDetails();
         } else {
             return;
         }

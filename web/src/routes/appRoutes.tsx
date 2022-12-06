@@ -15,6 +15,7 @@ import Connexion from "../pages/Authentification/Connexion";
 import LoginIcon from "@mui/icons-material/Login";
 import Inscription from "../pages/Authentification/Inscription";
 import PersonAddIcon from "@mui/icons-material/PersonAdd";
+import {AdminRoutes} from "./adminRoutes";
 const user1 = { role: "Auteur" };
 const user2 = { role: "Evaluateur" };
 const user3 = null as any;
@@ -126,6 +127,7 @@ const NotConnectedRoutes: RouteType[] = [
 ];
 
 const appRoutes: RouteType[] = [];
+appRoutes.push(...AdminRoutes);
 if (!user?.role) {
   appRoutes.push(...NotConnectedRoutes);
 } else {

@@ -7,10 +7,15 @@ import com.uqam.api.security.UserDetailsWithRole;
 import javax.persistence.Entity;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
+import javax.persistence.ManyToMany;
+import java.util.List;
 
 @Entity
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 public class Evaluator extends Person {
+
+    @ManyToMany(mappedBy = "evaluators")
+    private List<ScientificCommittee> scientificCommittees;
 
     protected Evaluator() {
         super();
@@ -22,5 +27,9 @@ public class Evaluator extends Person {
 
     public UserDetailsWithRole toUserDetails() {
         return new CustomUserDetails(Role.EVALUATOR, email, password);
+    }
+
+    public void addScientificCommittee(ScientificCommittee scientificCommittee) {
+        scientificCommittees.add(scientificCommittee);
     }
 }

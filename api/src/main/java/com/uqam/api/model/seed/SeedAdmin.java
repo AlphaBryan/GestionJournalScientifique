@@ -22,6 +22,8 @@ public class SeedAdmin implements CommandLineRunner {
     }
 
     private void seedAdmin() {
-        administratorDAO.save(new Administrator("Admin", "Admin", "admin@admin.ca", passwordEncoder.encode("secret")));
+        if (administratorDAO.count() == 0) {
+            administratorDAO.save(new Administrator("Admin", "Admin", "admin@admin.ca", passwordEncoder.encode("secret")));
+        }
     }
 }

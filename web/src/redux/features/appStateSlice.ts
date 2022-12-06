@@ -2,10 +2,12 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 type appState = {
   appState: string;
+  isLoading: boolean;
 };
 
 const initialState: appState = {
   appState: "",
+  isLoading: false,
 };
 
 export const appStateSlice = createSlice({
@@ -15,6 +17,9 @@ export const appStateSlice = createSlice({
     setAppState: (state, action: PayloadAction<string>) => {
       state.appState = action.payload;
     },
+    setIsLoading: (state, action: PayloadAction<boolean>) => {
+      state.isLoading = action.payload;
+    }
   },
 });
 

@@ -10,7 +10,12 @@ public class ScientificCommittee {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
 
-    @OneToMany(targetEntity = Evaluator.class, cascade = CascadeType.ALL)
+    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @JoinTable(
+            name = "scientific_committees_evaluators",
+            joinColumns = @JoinColumn(name = "committee_id"),
+            inverseJoinColumns = @JoinColumn(name = "evaluator_id")
+    )
     private List<Evaluator> evaluators;
 
     @OneToMany(targetEntity = Article.class)
@@ -21,6 +26,9 @@ public class ScientificCommittee {
 
     public ScientificCommittee(List<Evaluator> evaluators) {
         this.evaluators = evaluators;
+        for (Evaluator evaluator : evaluators) {
+            evaluator.addScientificCommittee(this);
+        }
     }
 
     public Integer getId() {

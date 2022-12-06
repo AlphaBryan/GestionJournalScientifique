@@ -24,7 +24,7 @@ public class JwtTokenUtil implements Serializable {
     }    //retrieve expiration date from jwt token
 
     public Role getRoleFromToken(String token) {
-        return getAllClaimsFromToken(token).get("role", Role.class);
+        return Role.valueOf(getAllClaimsFromToken(token).get("role", String.class));
     }
 
     public Date getExpirationDateFromToken(String token) {

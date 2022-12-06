@@ -11,4 +11,17 @@ public class EvaluatorDTO {
         this.firstName = firstName;
         this.lastName = lastName;
     }
+
+
+    public Integer getId() {
+        return id;
+    }
+
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
 }
