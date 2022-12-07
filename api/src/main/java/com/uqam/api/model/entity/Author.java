@@ -21,7 +21,7 @@ public class Author extends Person {
     }
 
     public UserDetailsWithRole toUserDetails() {
-        return new CustomUserDetails(Role.AUTHOR, email, password);
+        return new CustomUserDetails(Role.AUTHOR, email, password, this);
     }
 }
 

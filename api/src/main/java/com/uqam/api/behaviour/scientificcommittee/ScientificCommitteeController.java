@@ -7,6 +7,7 @@ import com.uqam.api.service.ArticleService;
 import com.uqam.api.service.ScientificCommitteeService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -30,6 +31,7 @@ public class ScientificCommitteeController {
         this.committeeDTOMapper = committeeDTOMapper;
     }
 
+    @PreAuthorize("hasAnyRole('ADMIN', 'EVALUATOR')")
     @GetMapping("/{committeeId}")
     public ResponseEntity<CommitteeDTO> getCommittee(@PathVariable("committeeId") Integer committeeId) {
         Optional<ScientificCommittee> scientificCommittee = scientificCommitteeService.getById(committeeId);
@@ -40,6 +42,7 @@ public class ScientificCommitteeController {
                 .body(committeeDTOMapper.toCommitteeDTO(scientificCommittee.get()));
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("/")
     public ResponseEntity<List<CommitteeDTO>> getCommittees() {
         Iterable<ScientificCommittee> scientificCommittees = scientificCommitteeService.getAll();
@@ -52,6 +55,7 @@ public class ScientificCommitteeController {
         return ResponseEntity.ok().body(committees);
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @PostMapping("/")
     public ResponseEntity<CommitteeDTO> createCommittee(@RequestBody @Valid CreateCommitteeRequest request) {
         ScientificCommittee scientificCommittee = scientificCommitteeService.create(request.getEvaluatorsId());
@@ -60,6 +64,7 @@ public class ScientificCommitteeController {
         return new ResponseEntity<>(committeeDTOMapper.toCommitteeDTO(scientificCommittee), HttpStatus.CREATED);
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @PutMapping("/{committeeId}")
     public ResponseEntity<CommitteeDTO> updateCommittee(@PathVariable("committeeId") Integer committeeId, @RequestBody @Valid UpdateCommitteeRequest request) {
         ScientificCommittee scientificCommittee = scientificCommitteeService.update(committeeId, request.getEvaluatorsId());
@@ -68,6 +73,7 @@ public class ScientificCommitteeController {
         return ResponseEntity.ok().body(committeeDTOMapper.toCommitteeDTO(scientificCommittee));
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @PutMapping("/{committeeId}/articles")
     public ResponseEntity<CommitteeDTO> affectArticleToCommittee(@PathVariable("committeeId") Integer committeeId, @RequestBody @Valid AffectArticleToCommitteeRequest request) {
         ScientificCommittee scientificCommittee = articleService.affectToScientificCommittee(request.getArticleId(), committeeId);

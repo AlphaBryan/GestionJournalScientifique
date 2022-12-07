@@ -26,7 +26,7 @@ public class Evaluator extends Person {
     }
 
     public UserDetailsWithRole toUserDetails() {
-        return new CustomUserDetails(Role.EVALUATOR, email, password);
+        return new CustomUserDetails(Role.EVALUATOR, email, password, this);
     }
 
     public void addScientificCommittee(ScientificCommittee scientificCommittee) {

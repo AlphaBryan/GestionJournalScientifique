@@ -9,9 +9,8 @@ import com.uqam.api.model.entity.Evaluator;
 import com.uqam.api.security.AuthenticatedAuthorFacade;
 import com.uqam.api.security.AuthenticatedEvaluatorFacade;
 import com.uqam.api.service.ArticleService;
-import com.uqam.api.service.AuthorService;
-import com.uqam.api.service.CategoryService;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -23,21 +22,18 @@ import java.util.List;
 public class ArticleController {
 
     private final ArticleService articleService;
-    private final CategoryService categoryService;
-    private final AuthorService authorService;
     private final AuthenticatedAuthorFacade authenticatedAuthor;
     private final AuthenticatedEvaluatorFacade authenticatedEvaluator;
     private final ArticleDTOMapper articleDTOMapper;
 
-    public ArticleController(ArticleService articleService, CategoryService categoryService, AuthorService authorService, AuthenticatedAuthorFacade authenticatedAuthor, AuthenticatedEvaluatorFacade authenticatedEvaluator, ArticleDTOMapper articleDTOMapper) {
+    public ArticleController(ArticleService articleService, AuthenticatedAuthorFacade authenticatedAuthor, AuthenticatedEvaluatorFacade authenticatedEvaluator, ArticleDTOMapper articleDTOMapper) {
         this.articleService = articleService;
-        this.categoryService = categoryService;
-        this.authorService = authorService;
         this.authenticatedAuthor = authenticatedAuthor;
         this.authenticatedEvaluator = authenticatedEvaluator;
         this.articleDTOMapper = articleDTOMapper;
     }
 
+    @PreAuthorize("hasRole('AUTHOR')")
     @PostMapping("/")
     public ResponseEntity<ArticleDTO> createArticle(@RequestBody @Valid CreateArticleRequest request) {
         Author currentAuthor = authenticatedAuthor.getAuthenticatedAuthor();
@@ -65,6 +61,7 @@ public class ArticleController {
         return ResponseEntity.ok().body(articleDTOS);
     }
 
+    @PreAuthorize("hasAnyRole('ADMIN', 'EVALUATOR')")
     @GetMapping("/committee/{committeeId}/articles")
     public ResponseEntity<List<ArticleDTO>> getCommitteeArticles(@PathVariable("committeeId") Integer committeeId) {
         Iterable<Article> articles = articleService.getByScientificCommittee(committeeId);
@@ -78,6 +75,7 @@ public class ArticleController {
         return ResponseEntity.ok().body(articleDTOS);
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("/edition/{editionId}/articles")
     public ResponseEntity<List<ArticleDTO>> getEditionArticles(@PathVariable("editionId") Integer editionId) {
         Iterable<Article> articles = articleService.getByEdition(editionId);
@@ -91,6 +89,7 @@ public class ArticleController {
         return ResponseEntity.ok().body(articleDTOS);
     }
 
+    @PreAuthorize("hasRole('EVALUATOR') && canEvaluate(#articleId)")
     @PostMapping("/{articleId}/{versionId}/evaluate")
     public ResponseEntity<Object> evaluateArticleVersion(@PathVariable("articleId") Integer articleId, @PathVariable("versionId") Integer versionId, @RequestBody @Valid EvaluateArticleVersionRequest request) {
         Evaluator evaluator = authenticatedEvaluator.getAuthenticatedEvaluator();
@@ -101,6 +100,7 @@ public class ArticleController {
         return ResponseEntity.ok().build();
     }
 
+    @PreAuthorize("hasRole('EVALUATOR') && canEvaluate(#articleId)")
     @PutMapping("/{articleId}/ready")
     public ResponseEntity<ArticleDTO> articleReady(@PathVariable("articleId") Integer articleId) {
         Article article = articleService.ready(articleId);

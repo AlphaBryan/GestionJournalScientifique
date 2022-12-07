@@ -21,6 +21,6 @@ public class Administrator extends Person {
     }
 
     public UserDetailsWithRole toUserDetails() {
-        return new CustomUserDetails(Role.ADMINISTRATOR, email, password);
+        return new CustomUserDetails(Role.ADMINISTRATOR, email, password, this);
     }
 }

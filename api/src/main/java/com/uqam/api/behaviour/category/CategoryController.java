@@ -6,6 +6,7 @@ import com.uqam.api.model.entity.Category;
 import com.uqam.api.service.CategoryService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -35,12 +36,14 @@ public class CategoryController {
         return ResponseEntity.ok().body(categoryDTOS);
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @PostMapping("/")
     public ResponseEntity<CategoryDTO> createCategory(@RequestBody @Valid CreateCategoryRequest request) {
         Category category = categoryService.create(request.getLabel());
         return new ResponseEntity<>(categoryDTOMapper.toCategoryDTO(category), HttpStatus.CREATED);
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @PutMapping("/{categoryId}")
     public ResponseEntity<CategoryDTO> updateCategory(@PathVariable("categoryId") Integer categoryId, @RequestBody @Valid UpdateCategoryRequest request) {
         Category category = categoryService.update(categoryId, request.getLabel());
@@ -49,6 +52,7 @@ public class CategoryController {
         return ResponseEntity.ok().body(categoryDTOMapper.toCategoryDTO(category));
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping("/{categoryId}")
     public ResponseEntity<Object> deleteCategory(@PathVariable("categoryId") Integer categoryId) {
         Category category = categoryService.delete(categoryId);
