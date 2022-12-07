@@ -2,35 +2,31 @@ package com.uqam.api.behaviour.evaluator;
 
 import com.uqam.api.dto.EvaluatorDTO;
 import com.uqam.api.mapper.EvaluatorDTOMapper;
-import com.uqam.api.model.dao.EvaluatorDAO;
 import com.uqam.api.model.entity.Evaluator;
-import org.springframework.http.MediaType;
+import com.uqam.api.service.EvaluatorService;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("evaluators")
 public class EvaluatorController {
 
-    private final EvaluatorDAO evaluatorDAO;
+    private final EvaluatorService evaluatorService;
     private final EvaluatorDTOMapper evaluatorDTOMapper;
-    private final PasswordEncoder passwordEncoder;
 
-    public EvaluatorController(EvaluatorDAO evaluatorDAO, EvaluatorDTOMapper evaluatorDTOMapper, PasswordEncoder passwordEncoder) {
-        this.evaluatorDAO = evaluatorDAO;
+
+    public EvaluatorController(EvaluatorService evaluatorService, EvaluatorDTOMapper evaluatorDTOMapper) {
+        this.evaluatorService = evaluatorService;
         this.evaluatorDTOMapper = evaluatorDTOMapper;
-        this.passwordEncoder = passwordEncoder;
     }
 
     @GetMapping("/")
     public ResponseEntity<List<EvaluatorDTO>> getEvaluators() {
-        Iterable<Evaluator> evaluators = evaluatorDAO.findAll();
+        Iterable<Evaluator> evaluators = evaluatorService.getAll();
 
         List<EvaluatorDTO> evaluatorDTOS = new ArrayList<>();
         for (Evaluator evaluator : evaluators) {
@@ -40,20 +36,17 @@ public class EvaluatorController {
         return ResponseEntity.ok().body(evaluatorDTOS);
     }
 
-    @PostMapping(value = "/", produces = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(value = "/")
     public ResponseEntity<EvaluatorDTO> createEvaluator(@RequestBody @Valid CreateEvaluatorRequest request) {
-        System.out.println("Create evaluator");
-        Evaluator evaluator = evaluatorDAO.save(new Evaluator(request.getFirstName(), request.getLastName(), request.getEmail(), passwordEncoder.encode(request.getPassword())));
-        System.out.println("Evaluator created");
+        Evaluator evaluator = evaluatorService.create(request.getFirstName(), request.getLastName(), request.getEmail(), request.getPassword());
+
         return ResponseEntity.ok().body(evaluatorDTOMapper.toEvaluatorDTO(evaluator));
     }
 
     @DeleteMapping("/{evaluatorId}")
     public ResponseEntity<Object> removeEvaluator(@PathVariable("evaluatorId") Integer evaluatorId) {
-        Optional<Evaluator> evaluator = evaluatorDAO.findById(evaluatorId);
-        if (evaluator.isEmpty()) return ResponseEntity.badRequest().build();
-
-        evaluatorDAO.delete(evaluator.get());
+        Evaluator evaluator = evaluatorService.delete(evaluatorId);
+        if (evaluator == null) return ResponseEntity.notFound().build();
 
         return ResponseEntity.ok().build();
     }

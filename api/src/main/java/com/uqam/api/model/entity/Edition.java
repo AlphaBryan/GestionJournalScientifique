@@ -19,6 +19,7 @@ public class Edition {
     private Set<Article> articles;
 
     protected Edition() {
+        System.out.println("Create edition object");
     }
 
     public Edition(String name, Timestamp submissionLimitDate) {
