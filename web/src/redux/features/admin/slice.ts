@@ -1,8 +1,10 @@
 import {createAsyncThunk, createSlice} from "@reduxjs/toolkit";
-import {get, httpDelete, post} from "../httpUtil";
-import {Evaluator} from "../dto/Evaluator";
-import {Committee} from "../dto/Committee";
-import {Edition} from "../dto/Edition";
+import {get, httpDelete, post} from "../../httpUtil";
+import {Evaluator} from "../../dto/Evaluator";
+import {Committee} from "../../dto/Committee";
+import {Edition} from "../../dto/Edition";
+import {Category} from "../../dto/Category";
+import {categoryReducers} from "./category";
 
 type CreateEvaluator = {
     firstName: string, lastName: string, email: string, password: string
@@ -74,16 +76,18 @@ export const addEdition = createAsyncThunk(
     }
 )
 
-interface AdminSlice {
+export interface AdminSlice {
     evaluators: Evaluator[];
     committees: Committee[];
     editions: Edition[];
+    categories: Category[];
 }
 
 const initialState: AdminSlice = {
     evaluators: [],
     committees: [],
     editions: [],
+    categories: [],
 }
 
 export const adminSlice = createSlice({
@@ -114,6 +118,8 @@ export const adminSlice = createSlice({
         builder.addCase(addEdition.fulfilled, (state, action) => {
             state.editions.push(action.payload);
         })
+
+        categoryReducers(builder);
     }
 });
 

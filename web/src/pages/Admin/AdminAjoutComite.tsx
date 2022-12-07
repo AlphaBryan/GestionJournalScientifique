@@ -1,22 +1,22 @@
 import {useNavigate} from "react-router-dom";
-import {useDispatch, useSelector} from "react-redux";
-import {AppDispatch, RootState, useAppSelector} from "../../redux/store";
+import {useDispatch} from "react-redux";
+import {AppDispatch, useAppSelector} from "../../redux/store";
 import {FormEvent, useCallback, useEffect, useState} from "react";
-import {addCommittee, addEvaluator, getEvaluators} from "../../redux/features/adminSlice";
+import {addCommittee, getEvaluators} from "../../redux/features/admin/slice";
 import {ArrowBack} from "@mui/icons-material";
 import {
     Box,
-    Button, Checkbox,
-    Chip, InputLabel,
+    Button,
+    Checkbox,
+    Chip,
+    InputLabel,
     ListItemText,
     MenuItem,
     OutlinedInput,
     Paper,
     Select,
-    SelectChangeEvent,
-    TextField
+    SelectChangeEvent
 } from "@mui/material";
-import {GridSelectionModel} from "@mui/x-data-grid";
 
 export const AdminAjoutComite = () => {
 
@@ -41,7 +41,7 @@ export const AdminAjoutComite = () => {
     }, [dispatch, evaluatorsId]);
 
     const handleChange = (event: SelectChangeEvent<typeof evaluatorsId>) => {
-        const {target: { value }} = event;
+        const {target: {value}} = event;
         setEvaluatorsId(typeof value === 'string' ? value.split(',') : value);
     };
 
@@ -58,10 +58,16 @@ export const AdminAjoutComite = () => {
             </div>
 
             <div>
-                <Paper elevation={4} style={{ width: 500, margin: "auto"}}>
+                <Paper elevation={4} style={{width: 500, margin: "auto"}}>
                     <form
                         onSubmit={handleSubmit}
-                        style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: 20}}
+                        style={{
+                            display: 'flex',
+                            flexDirection: 'column',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            padding: 20
+                        }}
                     >
 
                         <h2>Ajouter un comité scientifique</h2>
@@ -73,12 +79,13 @@ export const AdminAjoutComite = () => {
                             multiple
                             value={evaluatorsId}
                             onChange={handleChange}
-                            style={{ width: 250 }}
-                            input={<OutlinedInput label="" placeholder="" />}
+                            style={{width: 250}}
+                            input={<OutlinedInput label="" placeholder=""/>}
                             renderValue={(selected) => (
-                                <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
+                                <Box sx={{display: 'flex', flexWrap: 'wrap', gap: 0.5}}>
                                     {selected.map((value) => (
-                                        <Chip key={value} label={computeEvaluatorLabel(evaluators.find(e => e.id.toString() === value))} />
+                                        <Chip key={value}
+                                              label={computeEvaluatorLabel(evaluators.find(e => e.id.toString() === value))}/>
                                     ))}
                                 </Box>
                             )}
@@ -88,12 +95,13 @@ export const AdminAjoutComite = () => {
                                     key={evaluator.id}
                                     value={evaluator.id}
                                 >
-                                    <Checkbox checked={evaluatorsId.indexOf(evaluator.id.toString()) > -1} />
-                                    <ListItemText primary={computeEvaluatorLabel(evaluator)} /></MenuItem>
+                                    <Checkbox checked={evaluatorsId.indexOf(evaluator.id.toString()) > -1}/>
+                                    <ListItemText primary={computeEvaluatorLabel(evaluator)}/></MenuItem>
                             ))}
                         </Select>
 
-                        <Button variant='contained' style={{ marginTop: 20 }} type='submit' disabled={isLoading}>Confirmer</Button>
+                        <Button variant='contained' style={{marginTop: 20}} type='submit'
+                                disabled={isLoading}>Confirmer</Button>
 
                     </form>
                 </Paper>

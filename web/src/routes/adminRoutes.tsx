@@ -6,6 +6,8 @@ import {AdminComites} from "../pages/Admin/AdminComites";
 import {AdminAjoutComite} from "../pages/Admin/AdminAjoutComite";
 import {AdminEditions} from "../pages/Admin/AdminEditions";
 import {AdminAjoutEdition} from "../pages/Admin/AdminAjoutEdition";
+import {AdminCategories} from "../pages/Admin/AdminCategories";
+import {AdminAjoutCategorie} from "../pages/Admin/AdminAjoutCategorie";
 
 
 export const AdminRoutes: RouteType[] = [
@@ -43,5 +45,15 @@ export const AdminRoutes: RouteType[] = [
         path: '/admin/editions/ajouter',
         element: <AdminAjoutEdition/>,
         state: 'adminAjoutEdition',
+    },
+    {
+        path: '/admin/categories',
+        element: <AdminCategories/>,
+        state: 'adminCategories'
+    },
+    {
+        path: '/admin/categories/ajouter',
+        element: <AdminAjoutCategorie/>,
+        state: 'adminAjoutCategorie'
     }
 ]

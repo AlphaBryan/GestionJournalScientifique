@@ -1,7 +1,7 @@
 import {useNavigate} from "react-router-dom";
 import {useAppDispatch, useAppSelector} from "../../redux/store";
 import {useCallback, useEffect} from "react";
-import {getCommittees} from "../../redux/features/adminSlice";
+import {getCommittees} from "../../redux/features/admin/slice";
 import {Button} from "@mui/material";
 import {DataGrid} from "@mui/x-data-grid";
 
@@ -23,11 +23,11 @@ export const AdminComites = () => {
 
     return (
         <div>
-            <div style={{ display: 'flex', justifyContent: 'space-between'}}>
+            <div style={{display: 'flex', justifyContent: 'space-between'}}>
                 <h2>Liste des comités scientifiques</h2>
                 <Button variant='outlined' onClick={() => navigate('/admin/comites/ajouter')}>Ajouter un comité</Button>
             </div>
-            <div style={{ height: '700px', margin: 20 }}>
+            <div style={{height: '700px', margin: 20}}>
                 <DataGrid
                     columns={[
                         {

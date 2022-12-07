@@ -2,7 +2,7 @@ import {Button} from "@mui/material";
 import {useNavigate} from "react-router-dom";
 import {useCallback, useEffect, useState} from "react";
 import {useAppDispatch, useAppSelector} from "../../redux/store";
-import {deleteEvaluators, getEvaluators} from "../../redux/features/adminSlice";
+import {deleteEvaluators, getEvaluators} from "../../redux/features/admin/slice";
 import {DataGrid, GridSelectionModel} from "@mui/x-data-grid";
 
 
@@ -20,20 +20,22 @@ export const AdminEvaluateurs = () => {
     }, [dispatch]);
 
     const deleteSelectedEvaluators = useCallback(() => {
-       dispatch(deleteEvaluators(selectionModel as number[]));
+        dispatch(deleteEvaluators(selectionModel as number[]));
     }, [dispatch, selectionModel]);
 
 
     return (
         <div>
-            <div style={{ display: 'flex', justifyContent: 'space-between'}}>
+            <div style={{display: 'flex', justifyContent: 'space-between'}}>
                 <h2>Liste des evaluateurs</h2>
-                <Button variant='outlined' onClick={() => navigate('/admin/evaluateurs/ajouter')}>Ajouter un évaluateur</Button>
+                <Button variant='outlined' onClick={() => navigate('/admin/evaluateurs/ajouter')}>Ajouter un
+                    évaluateur</Button>
             </div>
             <div>
-                <Button disabled={selectionModel.length === 0} variant='outlined' onClick={deleteSelectedEvaluators}>Supprimer les évaluateurs sélectionnés</Button>
+                <Button disabled={selectionModel.length === 0} variant='outlined' onClick={deleteSelectedEvaluators}>Supprimer
+                    les évaluateurs sélectionnés</Button>
             </div>
-            <div style={{ height: '700px', margin: 20 }}>
+            <div style={{height: '700px', margin: 20}}>
                 <DataGrid
                     columns={[
                         {

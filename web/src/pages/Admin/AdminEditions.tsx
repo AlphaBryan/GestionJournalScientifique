@@ -2,7 +2,7 @@ import {useNavigate} from "react-router-dom";
 import {useAppDispatch, useAppSelector} from "../../redux/store";
 import {useEffect} from "react";
 import {DataGrid} from "@mui/x-data-grid";
-import {getEditions} from "../../redux/features/adminSlice";
+import {getEditions} from "../../redux/features/admin/slice";
 import {Button} from "@mui/material";
 import dayjs from "dayjs";
 

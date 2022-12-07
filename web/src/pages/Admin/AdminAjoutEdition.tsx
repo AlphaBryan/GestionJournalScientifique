@@ -6,7 +6,7 @@ import {ArrowBack} from "@mui/icons-material";
 import {Button, Paper, TextField} from "@mui/material";
 import {DatePicker, LocalizationProvider} from "@mui/x-date-pickers";
 import {AdapterDayjs} from "@mui/x-date-pickers/AdapterDayjs";
-import {addEdition} from "../../redux/features/adminSlice";
+import {addEdition} from "../../redux/features/admin/slice";
 import dayjs, {Dayjs} from "dayjs";
 
 

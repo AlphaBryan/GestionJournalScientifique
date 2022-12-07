@@ -1,13 +1,13 @@
-import { configureStore } from "@reduxjs/toolkit";
+import {configureStore} from "@reduxjs/toolkit";
 import appStateSlice from "./features/appStateSlice";
-import adminReducer from './features/adminSlice';
+import adminReducer from './features/admin/slice';
 import {TypedUseSelectorHook, useDispatch, useSelector} from "react-redux";
 
 export const store = configureStore({
-  reducer: {
-    appState: appStateSlice,
-    admin: adminReducer
-  },
+    reducer: {
+        appState: appStateSlice,
+        admin: adminReducer
+    },
 });
 
 export type AppDispatch = typeof store.dispatch;
