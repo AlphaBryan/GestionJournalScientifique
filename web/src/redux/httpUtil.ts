@@ -1,6 +1,4 @@
 const API_URL = "http://localhost:7800";
-const token = 'eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhZG1pbkBhZG1pbi5jYSIsInJvbGUiOiJBRE1JTklTVFJBVE9SIiwiZXhwIjoxNjcwNDYzMDI5LCJpYXQiOjE2NzA0NDUwMjl9.tEAqC464IDnagV-y7AIpT218Vds2bcq1zXQ_Yf2iKHbBZzpc9zZpd4SAGsYG6E-2aFR2txauAAkbDdjCZoUbGQ';
-
 type Options = { noAuth: boolean };
 
 export const post = (path: string, body: any, options?: Options) => {
@@ -9,7 +7,7 @@ export const post = (path: string, body: any, options?: Options) => {
         'Accept': 'application/json',
     };
     if (!options || !options.noAuth) {
-        headers['Authorization'] = `Bearer ${token}`;
+        headers['Authorization'] = `Bearer ${localStorage.getItem('token')}`;
     }
     return fetch(`${API_URL}${path}`, {
         method: 'POST',
@@ -25,7 +23,7 @@ export const put = (path: string, body: any) => {
         headers: {
             'Content-Type': 'application/json',
             'Accept': 'application/json',
-            Authorization: `Bearer ${token}`
+            Authorization: `Bearer ${localStorage.getItem('token')}`
         }
     });
 }
@@ -36,7 +34,7 @@ export const get = (path: string) => {
         headers: {
             'Content-Type': 'application/json',
             'Accept': 'application/json',
-            Authorization: `Bearer ${token}`
+            Authorization: `Bearer ${localStorage.getItem('token')}`
         }
     });
 }
@@ -47,7 +45,7 @@ export const httpDelete = (path: string) => {
         headers: {
             'Content-Type': 'application/json',
             'Accept': 'application/json',
-            Authorization: `Bearer ${token}`
+            Authorization: `Bearer ${localStorage.getItem('token')}`
         }
     });
 }

@@ -1,44 +1,28 @@
-import {Alert, Button, Paper, Tab, Tabs, TextField} from "@mui/material";
-import {FormEvent, useCallback, useState} from "react";
 import {useAppDispatch, useAppSelector} from "../../redux/store";
-import {loginAuthor} from "../../redux/features/auth/author";
-import {loginAdministrator} from "../../redux/features/auth/administrator";
-import {loginEvaluator} from "../../redux/features/auth/evaluator";
+import {FormEvent, useCallback, useState} from "react";
+import {Alert, Button, Paper, TextField} from "@mui/material";
+import {registerAuthor} from "../../redux/features/auth/author";
 
-export const Login = () => {
 
+export const Register = () => {
     const isLoading = useAppSelector(state => state.appState.isLoading);
     const authError = useAppSelector(state => state.auth.authError);
 
     const dispatch = useAppDispatch();
 
+    const [firstName, setFirstName] = useState('');
+    const [lastName, setLastName] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-    const [tabIndex, setTabIndex] = useState(0);
 
-
-    const handleSubmit = useCallback(async (event: FormEvent) => {
+    const handleSubmit = useCallback((event: FormEvent) => {
         event.preventDefault();
-
-        if (tabIndex === 0) {
-            dispatch(loginAuthor({email, password}));
-        } else if (tabIndex === 1) {
-            dispatch(loginEvaluator({ email, password}));
-        } else if (tabIndex === 2) {
-            dispatch(loginAdministrator({email, password}));
-        }
-
-
-    }, [tabIndex, email, password, dispatch]);
+        dispatch(registerAuthor({ firstName, lastName, email, password }));
+    }, [dispatch, firstName, lastName, email, password]);
 
     return (
         <div>
             <Paper elevation={4} style={{width: 500, margin: 'auto'}}>
-                <Tabs value={tabIndex} onChange={(event, newValue) => setTabIndex(newValue)} centered>
-                    <Tab label="Auteur"/>
-                    <Tab label="Evaluateur"/>
-                    <Tab label="Administrateur"/>
-                </Tabs>
                 <form
                     onSubmit={handleSubmit}
                     style={{
@@ -49,16 +33,20 @@ export const Login = () => {
                         padding: 20
                     }}
                 >
-                    <h2>Connexion</h2>
+                    <h2>Créer un compte en tant qu'auteur</h2>
 
                     {
                         authError ?
                             <Alert severity="error" style={{width: '100%', marginTop: 10}}>
-                                Identifiants incorrects
+                                Adresse email déjà utilisée
                             </Alert>
                             : null
                     }
 
+                    <TextField id="firstname" label="Prénom" variant="standard" value={firstName}
+                               onChange={(event) => setFirstName(event.currentTarget.value)} type="text"/>
+                    <TextField id="lastname" label="Nom" variant="standard" value={lastName}
+                               onChange={(event) => setLastName(event.currentTarget.value)} type="text"/>
                     <TextField id="email" label="Email" variant="standard" value={email}
                                onChange={(event) => setEmail(event.currentTarget.value)} type="email"/>
                     <TextField id="password" label="Mot de passe" variant="standard" value={password}
@@ -69,5 +57,5 @@ export const Login = () => {
                 </form>
             </Paper>
         </div>
-    );
-};
+    )
+}

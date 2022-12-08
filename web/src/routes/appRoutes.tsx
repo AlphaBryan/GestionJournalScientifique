@@ -13,8 +13,19 @@ import GroupsIcon from "@mui/icons-material/Groups";
 import EmojiObjectsIcon from "@mui/icons-material/EmojiObjects";
 import {AdminRoutes} from "./adminRoutes";
 import {NotConnectedRoutes} from "./unconnectedRoutes";
+import {Logout} from "../pages/Authentification/Logout";
+import LogoutIcon from "@mui/icons-material/Logout";
 
 const AuteurRoutes: RouteType[] = [
+    {
+        path: "/deconnexion",
+        element: <Logout/>,
+        state: "deconnexion",
+        sidebarProps: {
+            displayText: "Se déconnecter",
+            icon: <LogoutIcon/>,
+        },
+    },
     {
         index: true,
         element: <HomePage/>,
@@ -59,6 +70,15 @@ const AuteurRoutes: RouteType[] = [
 ];
 
 const EvaluateurRoutes: RouteType[] = [
+    {
+        path: "/deconnexion",
+        element: <Logout/>,
+        state: "deconnexion",
+        sidebarProps: {
+            displayText: "Se déconnecter",
+            icon: <LogoutIcon/>,
+        },
+    },
     {
         index: true,
         element: <HomePage/>,

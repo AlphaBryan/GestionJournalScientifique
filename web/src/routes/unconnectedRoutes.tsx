@@ -2,8 +2,8 @@ import {RouteType} from "./config";
 import HomePage from "../pages/home/HomePage";
 import {Login} from "../pages/Authentification/Login";
 import LoginIcon from "@mui/icons-material/Login";
-import Inscription from "../pages/Authentification/Inscription";
 import PersonAddIcon from "@mui/icons-material/PersonAdd";
+import {Register} from "../pages/Authentification/Register";
 
 
 export const NotConnectedRoutes: RouteType[] = [
@@ -23,7 +23,7 @@ export const NotConnectedRoutes: RouteType[] = [
     },
     {
         path: "/inscription",
-        element: <Inscription/>,
+        element: <Register/>,
         state: "inscription",
         sidebarProps: {
             displayText: "M'inscrire",
