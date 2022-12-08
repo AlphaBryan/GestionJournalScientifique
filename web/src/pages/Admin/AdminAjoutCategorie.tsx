@@ -4,7 +4,7 @@ import {AppDispatch, RootState} from "../../redux/store";
 import {FormEvent, useCallback, useState} from "react";
 import {ArrowBack} from "@mui/icons-material";
 import {Button, Paper, TextField} from "@mui/material";
-import {addCategory} from "../../redux/features/admin/category";
+import {addCategory} from "../../redux/features/category/category-slice";
 
 
 export const AdminAjoutCategorie = () => {

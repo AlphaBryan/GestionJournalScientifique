@@ -1,7 +1,7 @@
 import {useNavigate} from "react-router-dom";
 import {useAppDispatch, useAppSelector} from "../../redux/store";
 import {useCallback, useEffect} from "react";
-import {getCommittees} from "../../redux/features/admin/slice";
+import {getCommittees} from "../../redux/features/committee/committee-slice";
 import {Button} from "@mui/material";
 import {DataGrid} from "@mui/x-data-grid";
 
@@ -11,7 +11,7 @@ export const AdminComites = () => {
 
     const dispatch = useAppDispatch();
 
-    const committees = useAppSelector(state => state.admin.committees);
+    const committees = useAppSelector(state => state.committee.committees);
 
     useEffect(() => {
         dispatch(getCommittees());

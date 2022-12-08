@@ -2,8 +2,8 @@ import {Button} from "@mui/material";
 import {useNavigate} from "react-router-dom";
 import {useCallback, useEffect, useState} from "react";
 import {useAppDispatch, useAppSelector} from "../../redux/store";
-import {deleteEvaluators, getEvaluators} from "../../redux/features/admin/slice";
 import {DataGrid, GridSelectionModel} from "@mui/x-data-grid";
+import {deleteEvaluators, getEvaluators} from "../../redux/features/evaluator/evaluator-slice";
 
 
 export const AdminEvaluateurs = () => {
@@ -11,7 +11,7 @@ export const AdminEvaluateurs = () => {
 
     const dispatch = useAppDispatch();
 
-    const evaluators = useAppSelector(state => state.admin.evaluators);
+    const evaluators = useAppSelector(state => state.evaluator.evaluators);
 
     const [selectionModel, setSelectionModel] = useState<GridSelectionModel>([]);
 

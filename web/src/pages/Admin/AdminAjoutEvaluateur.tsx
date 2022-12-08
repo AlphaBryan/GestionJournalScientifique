@@ -3,8 +3,8 @@ import {useNavigate} from "react-router-dom";
 import {Button, Paper, TextField} from "@mui/material";
 import {FormEvent, useCallback, useEffect, useState} from "react";
 import {useDispatch, useSelector} from "react-redux";
-import {addEvaluator} from "../../redux/features/admin/slice";
 import {AppDispatch, RootState} from "../../redux/store";
+import {addEvaluator} from "../../redux/features/evaluator/evaluator-slice";
 
 export const AdminAjoutEvaluateur = () => {
 

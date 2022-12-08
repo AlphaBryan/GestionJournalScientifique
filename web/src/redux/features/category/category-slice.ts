@@ -1,9 +1,17 @@
-import {ActionReducerMapBuilder, createAsyncThunk} from "@reduxjs/toolkit";
+import {createAsyncThunk, createSlice} from "@reduxjs/toolkit";
 import {get, handleHttpErrors, httpDelete, httpJson, post, put} from "../../httpUtil";
-import {AdminSlice} from "./slice";
+import {Category} from "../../dto/Category";
 
 type CreateCategory = { label: string };
 type UpdateCategory = { id: number; label: string };
+
+export interface CategorySlice {
+    categories: Category[];
+}
+
+const initialState: CategorySlice = {
+    categories: []
+};
 
 export const getCategories = createAsyncThunk(
     'categories/get',
@@ -39,20 +47,27 @@ export const deleteCategories = createAsyncThunk(
     }
 );
 
-export const categoryReducers = (builder: ActionReducerMapBuilder<AdminSlice>) => {
-    builder.addCase(getCategories.fulfilled, (state, action) => {
-        state.categories = action.payload;
-    });
-    builder.addCase(addCategory.fulfilled, (state, action) => {
-        state.categories.push(action.payload);
-    });
-    builder.addCase(updateCategory.fulfilled, (state, action) => {
-        const category = state.categories.find(category => category.id === action.payload.id);
-        if (category) {
-            category.label = action.payload.label;
-        }
-    });
-    builder.addCase(deleteCategories.fulfilled, (state, action) => {
-        state.categories = state.categories.filter(category => !action.payload.includes(category.id));
-    });
-}
+export const categorySlice = createSlice({
+    name: 'category',
+    initialState,
+    reducers: {},
+    extraReducers(builder) {
+        builder.addCase(getCategories.fulfilled, (state, action) => {
+            state.categories = action.payload;
+        });
+        builder.addCase(addCategory.fulfilled, (state, action) => {
+            state.categories.push(action.payload);
+        });
+        builder.addCase(updateCategory.fulfilled, (state, action) => {
+            const category = state.categories.find(category => category.id === action.payload.id);
+            if (category) {
+                category.label = action.payload.label;
+            }
+        });
+        builder.addCase(deleteCategories.fulfilled, (state, action) => {
+            state.categories = state.categories.filter(category => !action.payload.includes(category.id));
+        });
+    }
+});
+
+export default categorySlice.reducer;
