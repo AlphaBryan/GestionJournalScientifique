@@ -22,7 +22,7 @@ export const AdminAjoutEvaluateur = () => {
     const handleSubmit = useCallback(async (event: FormEvent) => {
         event.preventDefault();
         await dispatch(addEvaluator({firstName, lastName, email, password}));
-        navigate('/admin/evaluateurs');
+        navigate('/evaluateurs');
     }, [dispatch, firstName, lastName, email, password]);
 
     useEffect(() => {
@@ -32,7 +32,7 @@ export const AdminAjoutEvaluateur = () => {
     return (
         <div>
             <div>
-                <div onClick={() => navigate('/admin/evaluateurs')} className='hover-btn'>
+                <div onClick={() => navigate('/evaluateurs')} className='hover-btn'>
                     <ArrowBack fontSize={'large'}/>
                 </div>
             </div>

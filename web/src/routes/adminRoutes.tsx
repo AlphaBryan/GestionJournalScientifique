@@ -8,51 +8,62 @@ import {AdminEditions} from "../pages/Admin/AdminEditions";
 import {AdminAjoutEdition} from "../pages/Admin/AdminAjoutEdition";
 import {AdminCategories} from "../pages/Admin/AdminCategories";
 import {AdminAjoutCategorie} from "../pages/Admin/AdminAjoutCategorie";
+import {Logout} from "../pages/Authentification/Logout";
+import LogoutIcon from "@mui/icons-material/Logout";
 
 
 export const AdminRoutes: RouteType[] = [
     {
-        path: '/admin',
+        path: "/deconnexion",
+        element: <Logout/>,
+        state: "deconnexion",
+        sidebarProps: {
+            displayText: "Se déconnecter",
+            icon: <LogoutIcon/>,
+        },
+    },
+    {
+        path: '/',
         element: <AdminHome/>,
         state: 'adminHome',
     },
     {
-        path: '/admin/evaluateurs',
+        path: '/evaluateurs',
         element: <AdminEvaluateurs/>,
         state: 'adminEvaluateurs',
     },
     {
-        path: '/admin/evaluateurs/ajouter',
+        path: '/evaluateurs/ajouter',
         element: <AdminAjoutEvaluateur/>,
         state: 'adminAjoutEvaluateur',
     },
     {
-        path: '/admin/comites',
+        path: '/comites',
         element: <AdminComites/>,
         state: 'adminComites',
     },
     {
-        path: '/admin/comites/ajouter',
+        path: '/comites/ajouter',
         element: <AdminAjoutComite/>,
         state: 'adminAjoutComite'
     },
     {
-        path: '/admin/editions',
+        path: '/editions',
         element: <AdminEditions/>,
         state: 'adminEditions'
     },
     {
-        path: '/admin/editions/ajouter',
+        path: '/editions/ajouter',
         element: <AdminAjoutEdition/>,
         state: 'adminAjoutEdition',
     },
     {
-        path: '/admin/categories',
+        path: '/categories',
         element: <AdminCategories/>,
         state: 'adminCategories'
     },
     {
-        path: '/admin/categories/ajouter',
+        path: '/categories/ajouter',
         element: <AdminAjoutCategorie/>,
         state: 'adminAjoutCategorie'
     }

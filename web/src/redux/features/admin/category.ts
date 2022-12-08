@@ -1,5 +1,5 @@
 import {ActionReducerMapBuilder, createAsyncThunk} from "@reduxjs/toolkit";
-import {get, httpDelete, post, put} from "../../httpUtil";
+import {get, handleHttpErrors, httpDelete, httpJson, post, put} from "../../httpUtil";
 import {AdminSlice} from "./slice";
 
 type CreateCategory = { label: string };
@@ -8,7 +8,7 @@ type UpdateCategory = { id: number; label: string };
 export const getCategories = createAsyncThunk(
     'categories/get',
     async () => {
-        const res = await get('/categories/');
+        const res = await httpJson(handleHttpErrors(get('/categories/')));
         return res;
     }
 );
@@ -16,7 +16,7 @@ export const getCategories = createAsyncThunk(
 export const addCategory = createAsyncThunk(
     'categories/add',
     async (category: CreateCategory) => {
-        const res = await post('/categories/', category);
+        const res = await httpJson(handleHttpErrors(post('/categories/', category)));
         return res;
     }
 );
@@ -24,7 +24,7 @@ export const addCategory = createAsyncThunk(
 export const updateCategory = createAsyncThunk(
     'categories/update',
     async (category: UpdateCategory) => {
-        const res = await put(`/categories/${category.id}`, {label: category.label});
+        const res = await httpJson(handleHttpErrors(put(`/categories/${category.id}`, {label: category.label})));
         return res;
     }
 )
@@ -33,7 +33,7 @@ export const deleteCategories = createAsyncThunk(
     'categories/delete',
     async (categoriesId: number[]) => {
         for (const categoryId of categoriesId) {
-            await httpDelete(`/categories/${categoryId}`);
+            await handleHttpErrors(httpDelete(`/categories/${categoryId}`));
         }
         return categoriesId;
     }

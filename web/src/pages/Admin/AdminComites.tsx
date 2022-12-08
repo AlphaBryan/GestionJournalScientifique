@@ -25,7 +25,7 @@ export const AdminComites = () => {
         <div>
             <div style={{display: 'flex', justifyContent: 'space-between'}}>
                 <h2>Liste des comités scientifiques</h2>
-                <Button variant='outlined' onClick={() => navigate('/admin/comites/ajouter')}>Ajouter un comité</Button>
+                <Button variant='outlined' onClick={() => navigate('/comites/ajouter')}>Ajouter un comité</Button>
             </div>
             <div style={{height: '700px', margin: 20}}>
                 <DataGrid

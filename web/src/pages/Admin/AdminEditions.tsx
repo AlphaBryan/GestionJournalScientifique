@@ -22,7 +22,7 @@ export const AdminEditions = () => {
         <div>
             <div style={{display: 'flex', justifyContent: 'space-between'}}>
                 <h2>Liste des éditions</h2>
-                <Button variant='outlined' onClick={() => navigate('/admin/editions/ajouter')}>Ajouter une
+                <Button variant='outlined' onClick={() => navigate('/editions/ajouter')}>Ajouter une
                     édition</Button>
             </div>
             <div style={{height: '700px', margin: 20}}>

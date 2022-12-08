@@ -28,7 +28,7 @@ export const AdminEvaluateurs = () => {
         <div>
             <div style={{display: 'flex', justifyContent: 'space-between'}}>
                 <h2>Liste des evaluateurs</h2>
-                <Button variant='outlined' onClick={() => navigate('/admin/evaluateurs/ajouter')}>Ajouter un
+                <Button variant='outlined' onClick={() => navigate('/evaluateurs/ajouter')}>Ajouter un
                     évaluateur</Button>
             </div>
             <div>

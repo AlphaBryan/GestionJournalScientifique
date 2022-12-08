@@ -26,13 +26,13 @@ export const AdminAjoutEdition = () => {
         event.preventDefault();
         if (!submissionLimitDate) return;
         await dispatch(addEdition({name, submissionLimitDate: submissionLimitDate.toDate().getTime()}));
-        navigate('/admin/editions');
+        navigate('/editions');
     }, [dispatch, name, submissionLimitDate]);
 
     return (
         <div>
             <div>
-                <div onClick={() => navigate('/admin/editions')} className='hover-btn'>
+                <div onClick={() => navigate('/editions')} className='hover-btn'>
                     <ArrowBack fontSize={'large'}/>
                 </div>
             </div>

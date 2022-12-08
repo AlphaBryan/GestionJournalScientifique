@@ -50,6 +50,7 @@ public class AuthAuthorController {
     public ResponseEntity<AuthorDTO> loginAuthor(@RequestBody @Valid LoginRequest request) {
         System.out.println("Auth author");
         Optional<Author> author = authorDAO.findByEmail(request.getEmail());
+        System.out.println(author.isEmpty());
         if (author.isEmpty() || !passwordEncoder.matches(request.getPassword(), author.get().getPassword())) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }

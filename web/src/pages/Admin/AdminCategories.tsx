@@ -32,7 +32,7 @@ export const AdminCategories = () => {
         <div>
             <div style={{display: 'flex', justifyContent: 'space-between'}}>
                 <h2>Liste des catégories</h2>
-                <Button variant='outlined' onClick={() => navigate('/admin/categories/ajouter')}>Ajouter une
+                <Button variant='outlined' onClick={() => navigate('/categories/ajouter')}>Ajouter une
                     catégorie</Button>
             </div>
             <div>

@@ -1,5 +1,5 @@
 import {createAsyncThunk, createSlice} from "@reduxjs/toolkit";
-import {get, httpDelete, post} from "../../httpUtil";
+import {get, handleHttpErrors, httpDelete, httpJson, post} from "../../httpUtil";
 import {Evaluator} from "../../dto/Evaluator";
 import {Committee} from "../../dto/Committee";
 import {Edition} from "../../dto/Edition";
@@ -21,7 +21,7 @@ type CreateEdition = {
 export const addEvaluator = createAsyncThunk(
     'evaluators/add',
     async (evaluator: CreateEvaluator) => {
-        const res = await post('/evaluators/', evaluator);
+        const res = await httpJson(handleHttpErrors(post('/evaluators/', evaluator)));
         return res;
     }
 );
@@ -29,7 +29,7 @@ export const addEvaluator = createAsyncThunk(
 export const getEvaluators = createAsyncThunk(
     'evaluators/get',
     async () => {
-        const res = await get('/evaluators/');
+        const res = await httpJson(handleHttpErrors(get('/evaluators/')));
         return res;
     }
 );
@@ -38,7 +38,7 @@ export const deleteEvaluators = createAsyncThunk(
     'evaluators/delete',
     async (evaluatorsId: number[]) => {
         for (const evaluatorId of evaluatorsId) {
-            await httpDelete(`/evaluators/${evaluatorId}`);
+            await handleHttpErrors(httpDelete(`/evaluators/${evaluatorId}`));
         }
         return evaluatorsId;
     }
@@ -47,7 +47,7 @@ export const deleteEvaluators = createAsyncThunk(
 export const getCommittees = createAsyncThunk(
     'committees/get',
     async () => {
-        const res = await get('/committees/');
+        const res = await httpJson(handleHttpErrors(get('/committees/')));
         return res;
     }
 );
@@ -55,7 +55,7 @@ export const getCommittees = createAsyncThunk(
 export const addCommittee = createAsyncThunk(
     'committees/add',
     async (committee: CreateCommittee) => {
-        const res = await post('/committees/', committee);
+        const res = await httpJson(handleHttpErrors(post('/committees/', committee)));
         return res;
     }
 );
@@ -63,7 +63,7 @@ export const addCommittee = createAsyncThunk(
 export const getEditions = createAsyncThunk(
     'editions/get',
     async () => {
-        const res = await get('/editions/');
+        const res = await httpJson(handleHttpErrors(get('/editions/')));
         return res;
     }
 );
@@ -71,7 +71,7 @@ export const getEditions = createAsyncThunk(
 export const addEdition = createAsyncThunk(
     'editions/add',
     async (edition: CreateEdition) => {
-        const res = await post('/editions/', edition);
+        const res = await httpJson(handleHttpErrors(post('/editions/', edition)));
         return res;
     }
 )

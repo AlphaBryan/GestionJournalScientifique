@@ -2,11 +2,14 @@ import {configureStore} from "@reduxjs/toolkit";
 import appStateSlice from "./features/appStateSlice";
 import adminReducer from './features/admin/slice';
 import {TypedUseSelectorHook, useDispatch, useSelector} from "react-redux";
+import authReducer from './features/auth/slice';
+
 
 export const store = configureStore({
     reducer: {
         appState: appStateSlice,
-        admin: adminReducer
+        admin: adminReducer,
+        auth: authReducer,
     },
 });
 

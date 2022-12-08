@@ -42,10 +42,10 @@ export const AdminHome = (props: AdminHomeProps) => {
             justifyContent: 'flex-start',
             alignItems: 'flex-start'
         }}>
-            <BigButton label='Editions' icon={Newspaper} onClick={() => navigate('/admin/editions')}/>
-            <BigButton label='Evaluateurs' icon={School} onClick={() => navigate('/admin/evaluateurs')}/>
-            <BigButton label='Comités scientifiques' icon={Science} onClick={() => navigate('/admin/comites')}/>
-            <BigButton label='Catégories' icon={Category} onClick={() => navigate('/admin/categories')}/>
+            <BigButton label='Editions' icon={Newspaper} onClick={() => navigate('/editions')}/>
+            <BigButton label='Evaluateurs' icon={School} onClick={() => navigate('/evaluateurs')}/>
+            <BigButton label='Comités scientifiques' icon={Science} onClick={() => navigate('/comites')}/>
+            <BigButton label='Catégories' icon={Category} onClick={() => navigate('/categories')}/>
         </div>
     )
 

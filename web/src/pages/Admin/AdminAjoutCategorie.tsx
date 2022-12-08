@@ -19,13 +19,13 @@ export const AdminAjoutCategorie = () => {
     const handleSubmit = useCallback(async (event: FormEvent) => {
         event.preventDefault();
         await dispatch(addCategory({label}));
-        navigate('/admin/categories');
+        navigate('/categories');
     }, [dispatch, label]);
 
     return (
         <div>
             <div>
-                <div onClick={() => navigate('/admin/categories')} className='hover-btn'>
+                <div onClick={() => navigate('/categories')} className='hover-btn'>
                     <ArrowBack fontSize={'large'}/>
                 </div>
             </div>

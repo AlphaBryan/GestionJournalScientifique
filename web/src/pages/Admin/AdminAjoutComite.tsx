@@ -37,7 +37,7 @@ export const AdminAjoutComite = () => {
     const handleSubmit = useCallback(async (event: FormEvent) => {
         event.preventDefault();
         await dispatch(addCommittee({evaluatorsId: evaluatorsId.map(id => parseInt(id, 10))}));
-        navigate('/admin/comites');
+        navigate('/comites');
     }, [dispatch, evaluatorsId]);
 
     const handleChange = (event: SelectChangeEvent<typeof evaluatorsId>) => {
@@ -52,7 +52,7 @@ export const AdminAjoutComite = () => {
     return (
         <div>
             <div>
-                <div onClick={() => navigate('/admin/comites')} className='hover-btn'>
+                <div onClick={() => navigate('/comites')} className='hover-btn'>
                     <ArrowBack fontSize={'large'}/>
                 </div>
             </div>
