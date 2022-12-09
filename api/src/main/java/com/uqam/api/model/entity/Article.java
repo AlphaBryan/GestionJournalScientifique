@@ -78,4 +78,8 @@ public class Article {
             this.phase = Phase.RELECTURE;
         }
     }
+    public void addVersion(Version version) {
+
+        this.versions.add(version);
+    }
 }
