@@ -15,7 +15,7 @@ public class Edition {
 
     private Timestamp submissionLimitDate;
 
-    @OneToMany(targetEntity = Article.class)
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "edition")
     private Set<Article> articles;
 
     protected Edition() {

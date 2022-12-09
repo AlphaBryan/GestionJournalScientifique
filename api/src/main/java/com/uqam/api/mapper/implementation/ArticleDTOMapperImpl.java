@@ -1,17 +1,8 @@
 package com.uqam.api.mapper.implementation;
 
-import com.uqam.api.dto.ArticleDTO;
-import com.uqam.api.dto.AuthorDTO;
-import com.uqam.api.dto.CategoryDTO;
-import com.uqam.api.dto.VersionDTO;
-import com.uqam.api.mapper.ArticleDTOMapper;
-import com.uqam.api.mapper.AuthorDTOMapper;
-import com.uqam.api.mapper.CategoryDTOMapper;
-import com.uqam.api.mapper.VersionDTOMapper;
-import com.uqam.api.model.entity.Article;
-import com.uqam.api.model.entity.Author;
-import com.uqam.api.model.entity.Category;
-import com.uqam.api.model.entity.Version;
+import com.uqam.api.dto.*;
+import com.uqam.api.mapper.*;
+import com.uqam.api.model.entity.*;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -25,11 +16,13 @@ public class ArticleDTOMapperImpl implements ArticleDTOMapper {
     private final CategoryDTOMapper categoryDTOMapper;
     private final AuthorDTOMapper authorDTOMapper;
     private final VersionDTOMapper versionDTOMapper;
+    private final CommitteeDTOMapper committeeDTOMapper;
 
-    public ArticleDTOMapperImpl(CategoryDTOMapper categoryDTOMapper, AuthorDTOMapper authorDTOMapper, VersionDTOMapper versionDTOMapper) {
+    public ArticleDTOMapperImpl(CategoryDTOMapper categoryDTOMapper, AuthorDTOMapper authorDTOMapper, VersionDTOMapper versionDTOMapper, CommitteeDTOMapper committeeDTOMapper) {
         this.categoryDTOMapper = categoryDTOMapper;
         this.authorDTOMapper = authorDTOMapper;
         this.versionDTOMapper = versionDTOMapper;
+        this.committeeDTOMapper = committeeDTOMapper;
     }
 
     @Override
@@ -49,6 +42,12 @@ public class ArticleDTOMapperImpl implements ArticleDTOMapper {
             versions.add(versionDTOMapper.toVersionDTO(version));
         }
 
-        return new ArticleDTO(article.getId(), article.getTitle(), categories, authors, versions);
+        ScientificCommittee scientificCommittee = article.getScientificCommittee();
+        CommitteeDTO committeeDTO = null;
+        if (scientificCommittee != null) {
+            committeeDTO = committeeDTOMapper.toCommitteeDTO(scientificCommittee);
+        }
+
+        return new ArticleDTO(article.getId(), article.getTitle(), article.getPhase(), article.getCreationDate(), categories, authors, versions, committeeDTO);
     }
 }

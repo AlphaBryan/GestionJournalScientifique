@@ -50,6 +50,7 @@ export const AdminEditions = () => {
                     }))}
                     pageSize={10}
                     rowsPerPageOptions={[10]}
+                    onRowClick={params => navigate(`/editions/${params.id}`)}
                 />
             </div>
         </div>

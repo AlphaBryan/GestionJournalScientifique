@@ -35,7 +35,7 @@ public class ArticleService {
         Optional<Author> author = authorDAO.findById(authorId);
         if (author.isEmpty()) return null;
 
-        return articleDAO.findArticlesByAuthor(author.get());
+        return author.get().getArticles();
     }
 
     public Iterable<Article> getByEdition(Integer editionId) {
@@ -58,8 +58,12 @@ public class ArticleService {
             String text,
             Author firstAuthor,
             List<Integer> categoriesId,
-            List<Integer> authorsId
+            List<Integer> authorsId,
+            Integer editionId
     ) {
+        Optional<Edition> edition = editionDAO.findById(editionId);
+        if (edition.isEmpty()) return null;
+
         Set<Category> categories = new HashSet<>();
         for (Integer categoryId : categoriesId) {
             Optional<Category> category = categoryDAO.findById(categoryId);
@@ -80,7 +84,7 @@ public class ArticleService {
         }
 
         Version version = new Version(text);
-        return articleDAO.save(new Article(title, categories, authors, version));
+        return articleDAO.save(new Article(title, categories, authors, version, edition.get()));
     }
 
     public Evaluation evaluate(Integer versionId, Integer articleId, Integer rate, String comment, boolean isCommentMajor, Evaluator evaluator) {
@@ -117,7 +121,7 @@ public class ArticleService {
         if (article.isEmpty()) return null;
 
         if (article.get().getPhase() != Phase.CAMERA_READY) return null;
-        
+
         article.get().setPhase(Phase.READY_TO_PUBLISH);
 
         return articleDAO.save(article.get());

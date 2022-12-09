@@ -19,6 +19,9 @@ public class CreateArticleRequest {
     @NotNull
     private String text;
 
+    @NotNull
+    private Integer editionId;
+
     public String getText() {
         return text;
     }
@@ -33,5 +36,9 @@ public class CreateArticleRequest {
 
     public List<Integer> getCategoriesId() {
         return categoriesId;
+    }
+
+    public Integer getEditionId() {
+        return editionId;
     }
 }

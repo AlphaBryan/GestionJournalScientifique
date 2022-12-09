@@ -15,6 +15,7 @@ import {AdminRoutes} from "./adminRoutes";
 import {NotConnectedRoutes} from "./unconnectedRoutes";
 import {Logout} from "../pages/Authentification/Logout";
 import LogoutIcon from "@mui/icons-material/Logout";
+import {AuteurArticle} from "../pages/Auteur/AuteurArticle";
 
 const AuteurRoutes: RouteType[] = [
     {
@@ -30,6 +31,11 @@ const AuteurRoutes: RouteType[] = [
         index: true,
         element: <HomePage/>,
         state: "home",
+    },
+    {
+        path: '/article/:articleId',
+        element: <AuteurArticle/>,
+        state: 'auteurArticle'
     },
     {
         path: "/articleNouveau",

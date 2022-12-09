@@ -94,7 +94,7 @@ export const AdminAjoutComite = () => {
                             {evaluators.map((evaluator) => (
                                 <MenuItem
                                     key={evaluator.id}
-                                    value={evaluator.id}
+                                    value={evaluator.id.toString()}
                                 >
                                     <Checkbox checked={evaluatorsId.indexOf(evaluator.id.toString()) > -1}/>
                                     <ListItemText primary={computeEvaluatorLabel(evaluator)}/></MenuItem>

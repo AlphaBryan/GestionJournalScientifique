@@ -25,12 +25,20 @@ public class EvaluationListener {
         if (evaluations.size() == 3) {
             Article article = version.getArticle();
             Integer points = 0;
+            boolean hasMajorComment = false;
             for (Evaluation eval : evaluations) {
                 points += eval.getRate();
+                if (eval.isCommentMajor()) {
+                    hasMajorComment = true;
+                }
             }
 
             if (points >= 4) {
-                article.setPhase(Phase.ACCEPTED);
+                if (hasMajorComment) {
+                    article.setPhase(Phase.ACCEPTED_WITH_MAJOR_COMMENT);
+                } else {
+                    article.setPhase(Phase.ACCEPTED);
+                }
             } else {
                 article.setPhase(Phase.REFUSED);
             }

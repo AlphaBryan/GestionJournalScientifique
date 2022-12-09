@@ -10,6 +10,8 @@ import {AdminCategories} from "../pages/Admin/AdminCategories";
 import {AdminAjoutCategorie} from "../pages/Admin/AdminAjoutCategorie";
 import {Logout} from "../pages/Authentification/Logout";
 import LogoutIcon from "@mui/icons-material/Logout";
+import {AdminEdition} from "../pages/Admin/AdminEdition";
+import {AdminEditionArticle} from "../pages/Admin/AdminEditionArticle";
 
 
 export const AdminRoutes: RouteType[] = [
@@ -56,6 +58,16 @@ export const AdminRoutes: RouteType[] = [
         path: '/editions/ajouter',
         element: <AdminAjoutEdition/>,
         state: 'adminAjoutEdition',
+    },
+    {
+        path: '/editions/:editionId',
+        element: <AdminEdition/>,
+        state: 'adminEdition'
+    },
+    {
+        path: '/editions/:editionId/articles/:articleId',
+        element: <AdminEditionArticle/>,
+        state: 'adminEditionArticle'
     },
     {
         path: '/categories',
