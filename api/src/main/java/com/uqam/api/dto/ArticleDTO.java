@@ -24,4 +24,24 @@ public class ArticleDTO {
         this.authors = authors;
         this.versions = versions;
     }
+
+    public Integer getId() {
+        return id;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public Set<CategoryDTO> getCategories() {
+        return categories;
+    }
+
+    public List<AuthorDTO> getAuthors() {
+        return authors;
+    }
+
+    public List<VersionDTO> getVersions() {
+        return versions;
+    }
 }

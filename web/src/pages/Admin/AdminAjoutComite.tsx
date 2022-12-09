@@ -2,7 +2,7 @@ import {useNavigate} from "react-router-dom";
 import {useDispatch} from "react-redux";
 import {AppDispatch, useAppSelector} from "../../redux/store";
 import {FormEvent, useCallback, useEffect, useState} from "react";
-import {addCommittee, getEvaluators} from "../../redux/features/admin/slice";
+import {addCommittee} from "../../redux/features/committee/committee-slice";
 import {ArrowBack} from "@mui/icons-material";
 import {
     Box,
@@ -17,6 +17,7 @@ import {
     Select,
     SelectChangeEvent
 } from "@mui/material";
+import {getEvaluators} from "../../redux/features/evaluator/evaluator-slice";
 
 export const AdminAjoutComite = () => {
 
@@ -25,7 +26,7 @@ export const AdminAjoutComite = () => {
     const dispatch = useDispatch<AppDispatch>();
 
     const isLoading = useAppSelector(state => state.appState.isLoading);
-    const evaluators = useAppSelector(state => state.admin.evaluators);
+    const evaluators = useAppSelector(state => state.evaluator.evaluators);
 
     const [evaluatorsId, setEvaluatorsId] = useState<string[]>([]);
 
@@ -37,7 +38,7 @@ export const AdminAjoutComite = () => {
     const handleSubmit = useCallback(async (event: FormEvent) => {
         event.preventDefault();
         await dispatch(addCommittee({evaluatorsId: evaluatorsId.map(id => parseInt(id, 10))}));
-        navigate('/admin/comites');
+        navigate('/comites');
     }, [dispatch, evaluatorsId]);
 
     const handleChange = (event: SelectChangeEvent<typeof evaluatorsId>) => {
@@ -52,7 +53,7 @@ export const AdminAjoutComite = () => {
     return (
         <div>
             <div>
-                <div onClick={() => navigate('/admin/comites')} className='hover-btn'>
+                <div onClick={() => navigate('/comites')} className='hover-btn'>
                     <ArrowBack fontSize={'large'}/>
                 </div>
             </div>

@@ -3,8 +3,8 @@ import {useNavigate} from "react-router-dom";
 import {Button, Paper, TextField} from "@mui/material";
 import {FormEvent, useCallback, useEffect, useState} from "react";
 import {useDispatch, useSelector} from "react-redux";
-import {addEvaluator} from "../../redux/features/admin/slice";
 import {AppDispatch, RootState} from "../../redux/store";
+import {addEvaluator} from "../../redux/features/evaluator/evaluator-slice";
 
 export const AdminAjoutEvaluateur = () => {
 
@@ -22,7 +22,7 @@ export const AdminAjoutEvaluateur = () => {
     const handleSubmit = useCallback(async (event: FormEvent) => {
         event.preventDefault();
         await dispatch(addEvaluator({firstName, lastName, email, password}));
-        navigate('/admin/evaluateurs');
+        navigate('/evaluateurs');
     }, [dispatch, firstName, lastName, email, password]);
 
     useEffect(() => {
@@ -32,7 +32,7 @@ export const AdminAjoutEvaluateur = () => {
     return (
         <div>
             <div>
-                <div onClick={() => navigate('/admin/evaluateurs')} className='hover-btn'>
+                <div onClick={() => navigate('/evaluateurs')} className='hover-btn'>
                     <ArrowBack fontSize={'large'}/>
                 </div>
             </div>

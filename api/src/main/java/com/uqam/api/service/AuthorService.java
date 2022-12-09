@@ -19,4 +19,8 @@ public class AuthorService {
         return authorDAO.findById(authorId);
     }
 
+    public Iterable<Author> getAll() {
+        return authorDAO.findAll();
+    }
+
 }

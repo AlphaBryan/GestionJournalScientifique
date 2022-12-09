@@ -3,7 +3,7 @@ import {useAppDispatch, useAppSelector} from "../../redux/store";
 import {useCallback, useEffect, useState} from "react";
 import {DataGrid, GridSelectionModel} from "@mui/x-data-grid";
 import {Button} from "@mui/material";
-import {deleteCategories, getCategories, updateCategory} from "../../redux/features/admin/category";
+import {deleteCategories, getCategories, updateCategory} from "../../redux/features/category/category-slice";
 
 export const AdminCategories = () => {
 
@@ -11,7 +11,7 @@ export const AdminCategories = () => {
 
     const dispatch = useAppDispatch();
 
-    const categories = useAppSelector(state => state.admin.categories);
+    const categories = useAppSelector(state => state.category.categories);
 
     const [selectionModel, setSelectionModel] = useState<GridSelectionModel>([]);
 
@@ -32,7 +32,7 @@ export const AdminCategories = () => {
         <div>
             <div style={{display: 'flex', justifyContent: 'space-between'}}>
                 <h2>Liste des catégories</h2>
-                <Button variant='outlined' onClick={() => navigate('/admin/categories/ajouter')}>Ajouter une
+                <Button variant='outlined' onClick={() => navigate('/categories/ajouter')}>Ajouter une
                     catégorie</Button>
             </div>
             <div>

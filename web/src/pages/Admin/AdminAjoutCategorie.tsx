@@ -4,7 +4,7 @@ import {AppDispatch, RootState} from "../../redux/store";
 import {FormEvent, useCallback, useState} from "react";
 import {ArrowBack} from "@mui/icons-material";
 import {Button, Paper, TextField} from "@mui/material";
-import {addCategory} from "../../redux/features/admin/category";
+import {addCategory} from "../../redux/features/category/category-slice";
 
 
 export const AdminAjoutCategorie = () => {
@@ -19,13 +19,13 @@ export const AdminAjoutCategorie = () => {
     const handleSubmit = useCallback(async (event: FormEvent) => {
         event.preventDefault();
         await dispatch(addCategory({label}));
-        navigate('/admin/categories');
+        navigate('/categories');
     }, [dispatch, label]);
 
     return (
         <div>
             <div>
-                <div onClick={() => navigate('/admin/categories')} className='hover-btn'>
+                <div onClick={() => navigate('/categories')} className='hover-btn'>
                     <ArrowBack fontSize={'large'}/>
                 </div>
             </div>

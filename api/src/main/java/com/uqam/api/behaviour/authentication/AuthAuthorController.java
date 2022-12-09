@@ -35,7 +35,7 @@ public class AuthAuthorController {
 
     @PostMapping("register")
     public ResponseEntity<AuthorDTO> registerAuthor(@RequestBody @Valid RegisterAuthorRequest request) {
-        if (authorDAO.findByEmail(request.getEmail()) != null) {
+        if (authorDAO.findByEmail(request.getEmail()).isPresent()) {
             return ResponseEntity.badRequest().build();
         }
         Author author = authorDAO.save(new Author(request.getFirstName(), request.getLastName(), request.getEmail(), passwordEncoder.encode(request.getPassword())));
@@ -50,6 +50,7 @@ public class AuthAuthorController {
     public ResponseEntity<AuthorDTO> loginAuthor(@RequestBody @Valid LoginRequest request) {
         System.out.println("Auth author");
         Optional<Author> author = authorDAO.findByEmail(request.getEmail());
+        System.out.println(author.isEmpty());
         if (author.isEmpty() || !passwordEncoder.matches(request.getPassword(), author.get().getPassword())) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }

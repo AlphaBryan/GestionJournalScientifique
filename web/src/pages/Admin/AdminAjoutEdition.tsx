@@ -6,8 +6,8 @@ import {ArrowBack} from "@mui/icons-material";
 import {Button, Paper, TextField} from "@mui/material";
 import {DatePicker, LocalizationProvider} from "@mui/x-date-pickers";
 import {AdapterDayjs} from "@mui/x-date-pickers/AdapterDayjs";
-import {addEdition} from "../../redux/features/admin/slice";
 import dayjs, {Dayjs} from "dayjs";
+import {addEdition} from "../../redux/features/edition/edition-slice";
 
 
 export const AdminAjoutEdition = () => {
@@ -26,13 +26,13 @@ export const AdminAjoutEdition = () => {
         event.preventDefault();
         if (!submissionLimitDate) return;
         await dispatch(addEdition({name, submissionLimitDate: submissionLimitDate.toDate().getTime()}));
-        navigate('/admin/editions');
+        navigate('/editions');
     }, [dispatch, name, submissionLimitDate]);
 
     return (
         <div>
             <div>
-                <div onClick={() => navigate('/admin/editions')} className='hover-btn'>
+                <div onClick={() => navigate('/editions')} className='hover-btn'>
                     <ArrowBack fontSize={'large'}/>
                 </div>
             </div>

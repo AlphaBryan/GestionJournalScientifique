@@ -2,9 +2,9 @@ import {useNavigate} from "react-router-dom";
 import {useAppDispatch, useAppSelector} from "../../redux/store";
 import {useEffect} from "react";
 import {DataGrid} from "@mui/x-data-grid";
-import {getEditions} from "../../redux/features/admin/slice";
 import {Button} from "@mui/material";
 import dayjs from "dayjs";
+import {getEditions} from "../../redux/features/edition/edition-slice";
 
 
 export const AdminEditions = () => {
@@ -12,7 +12,7 @@ export const AdminEditions = () => {
 
     const dispatch = useAppDispatch();
 
-    const editions = useAppSelector(state => state.admin.editions);
+    const editions = useAppSelector(state => state.edition.editions);
 
     useEffect(() => {
         dispatch(getEditions());
@@ -22,7 +22,7 @@ export const AdminEditions = () => {
         <div>
             <div style={{display: 'flex', justifyContent: 'space-between'}}>
                 <h2>Liste des éditions</h2>
-                <Button variant='outlined' onClick={() => navigate('/admin/editions/ajouter')}>Ajouter une
+                <Button variant='outlined' onClick={() => navigate('/editions/ajouter')}>Ajouter une
                     édition</Button>
             </div>
             <div style={{height: '700px', margin: 20}}>
