@@ -43,6 +43,10 @@ public class Evaluation {
         return rate;
     }
 
+    public boolean isCommentMajor() {
+        return isCommentMajor;
+    }
+
     public Evaluator getEvaluator() {
         return evaluator;
     }

@@ -38,7 +38,7 @@ public class ArticleController {
     public ResponseEntity<ArticleDTO> createArticle(@RequestBody @Valid CreateArticleRequest request) {
         Author currentAuthor = authenticatedAuthor.getAuthenticatedAuthor();
 
-        Article article = articleService.create(request.getTitle(), request.getText(), currentAuthor, request.getCategoriesId(), request.getAuthorsId());
+        Article article = articleService.create(request.getTitle(), request.getText(), currentAuthor, request.getCategoriesId(), request.getAuthorsId(), request.getEditionId());
 
         if (article == null) return ResponseEntity.badRequest().build();
 

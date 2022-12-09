@@ -5,6 +5,8 @@ import {getCategories} from "../../redux/features/category/category-slice";
 import {getAuthors} from "../../redux/features/author/author-slice";
 import {Author} from "../../redux/dto/Author";
 import {addArticle} from "../../redux/features/article/article-slice";
+import {getEditions} from "../../redux/features/edition/edition-slice";
+import dayjs from "dayjs";
 
 const ArticleNouveau = () => {
 
@@ -12,9 +14,12 @@ const ArticleNouveau = () => {
 
     const categories = useAppSelector(state => state.category.categories);
     const authors = useAppSelector(state => state.author.authors);
+    const editions = useAppSelector(state => state.edition.editions);
+    const authUser = useAppSelector(state => state.auth.authUser);
 
     const [title, setTitle] = useState('');
     const [text, setText] = useState('');
+    const [editionId, setEditionId] = useState<number | string>('');
     const [categoriesId, setCategoriesId] = useState<string[]>([]);
     const [authorsId, setAuthorsId] = useState<string[]>([]);
 
@@ -24,7 +29,8 @@ const ArticleNouveau = () => {
 
     const handleSubmit = useCallback((event: FormEvent) => {
         event.preventDefault();
-        dispatch(addArticle({title, text, categoriesId, authorsId}));
+        if (typeof editionId !== "number") return;
+        dispatch(addArticle({title, text, categoriesId, authorsId, editionId}));
 
         // TODO redirect to created article
     }, [title, text, categoriesId, authorsId]);
@@ -32,13 +38,14 @@ const ArticleNouveau = () => {
     useEffect(() => {
         dispatch(getCategories());
         dispatch(getAuthors());
+        dispatch(getEditions());
     }, [dispatch]);
 
     return (
         <div>
             <form onSubmit={handleSubmit}>
                 <div>
-                    <h1 style={{marginTop: "5%"}}> Nouveau article </h1>
+                    <h1 style={{marginTop: "5%"}}> Nouvel article </h1>
                 </div>
                 <div style={{marginTop: "5%"}}>
                     <TextField
@@ -49,6 +56,43 @@ const ArticleNouveau = () => {
                         value={title}
                         onChange={(event) => setTitle(event.currentTarget.value)}
                     />
+                    <div
+                        style={{
+                            background: "black",
+                            height: "3px",
+                            width: "75%",
+                            margin: "auto",
+                            marginTop: "3%",
+                            marginBottom: "5%",
+                        }}
+                    />
+                    <h2> Edition </h2>
+                    <Select
+                        labelId="edition-label"
+                        id="edition"
+                        value={editionId}
+                        onChange={(event) => {
+                            const {target: {value}} = event;
+                            setEditionId(value as number);
+                        }}
+                        style={{width: 250}}
+                        input={<OutlinedInput label="" placeholder=""/>}
+                        renderValue={(selected) => (
+                            <Box sx={{display: 'flex', flexWrap: 'wrap', gap: 0.5}}>
+                                <Chip key={selected}
+                                      label={editions.find(e => e.id === selected)?.name}/>
+                            </Box>
+                        )}
+                    >
+                        {editions.filter(e => dayjs(new Date(e.submissionLimitDate)).diff(new Date()) > 0).map((edition) => (
+                            <MenuItem
+                                key={edition.id}
+                                value={edition.id}
+                            >
+                                <Checkbox checked={editionId === edition.id}/>
+                                <ListItemText primary={edition.name}/></MenuItem>
+                        ))}
+                    </Select>
                     <div
                         style={{
                             background: "black",
@@ -120,7 +164,7 @@ const ArticleNouveau = () => {
                             </Box>
                         )}
                     >
-                        {authors.map((author) => (
+                        {authors.filter(a => a.id !== authUser.id).map((author) => (
                             <MenuItem
                                 key={author.id}
                                 value={author.id.toString()}

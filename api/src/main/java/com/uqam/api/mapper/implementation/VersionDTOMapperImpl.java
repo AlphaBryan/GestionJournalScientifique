@@ -9,6 +9,6 @@ import org.springframework.stereotype.Component;
 public class VersionDTOMapperImpl implements VersionDTOMapper {
     @Override
     public VersionDTO toVersionDTO(Version version) {
-        return new VersionDTO(version.getId(), version.getText());
+        return new VersionDTO(version.getId(), version.getText(), version.getCreationDate());
     }
 }

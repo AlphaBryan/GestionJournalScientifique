@@ -28,6 +28,14 @@ export const addEdition = createAsyncThunk(
         const res = await httpJson(handleHttpErrors(post('/editions/', edition)));
         return res;
     }
+);
+
+export const getEditionArticles = createAsyncThunk(
+    'editions/get-articles',
+    async (editionId: number) => {
+        const res = await httpJson(handleHttpErrors(get(`/articles/edition/${editionId}/articles`)));
+        return {editionId, data: res};
+    }
 )
 
 export const editionSlice = createSlice({
@@ -40,6 +48,12 @@ export const editionSlice = createSlice({
         });
         builder.addCase(addEdition.fulfilled, (state, action) => {
             state.editions.push(action.payload);
+        });
+        builder.addCase(getEditionArticles.fulfilled, (state, action) => {
+            const edition = state.editions.find(e => e.id === action.payload.editionId);
+            if (edition) {
+                edition.articles = action.payload.data;
+            }
         });
     }
 })

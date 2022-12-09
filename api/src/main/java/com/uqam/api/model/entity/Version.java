@@ -37,6 +37,10 @@ public class Version {
         return text;
     }
 
+    public Timestamp getCreationDate() {
+        return creationDate;
+    }
+
     public Article getArticle() {
         return article;
     }

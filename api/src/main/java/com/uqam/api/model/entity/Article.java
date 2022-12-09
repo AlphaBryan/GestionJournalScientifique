@@ -1,6 +1,7 @@
 package com.uqam.api.model.entity;
 
 import javax.persistence.*;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
@@ -15,6 +16,8 @@ public class Article {
 
     private Phase phase;
 
+    private Timestamp creationDate;
+
     @ManyToMany(targetEntity = Category.class)
     private Set<Category> categories;
 
@@ -27,17 +30,22 @@ public class Article {
     @ManyToOne(targetEntity = ScientificCommittee.class, fetch = FetchType.LAZY)
     private ScientificCommittee scientificCommittee;
 
+    @ManyToOne(targetEntity = Edition.class, fetch = FetchType.LAZY)
+    private Edition edition;
+
     protected Article() {
     }
 
-    public Article(String title, Set<Category> categories, List<Author> authors, Version version) {
+    public Article(String title, Set<Category> categories, List<Author> authors, Version version, Edition edition) {
         this.title = title;
         this.categories = categories;
         this.authors = authors;
         List<Version> versions = new ArrayList<>();
         versions.add(version);
         this.versions = versions;
+        this.edition = edition;
         this.phase = Phase.CREATED;
+        this.creationDate = new Timestamp(System.currentTimeMillis());
     }
 
     public Integer getId() {
@@ -66,6 +74,10 @@ public class Article {
 
     public void setPhase(Phase phase) {
         this.phase = phase;
+    }
+
+    public Timestamp getCreationDate() {
+        return creationDate;
     }
 
     public ScientificCommittee getScientificCommittee() {
