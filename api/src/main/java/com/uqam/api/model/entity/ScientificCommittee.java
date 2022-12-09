@@ -27,7 +27,7 @@ public class ScientificCommittee {
     public ScientificCommittee(List<Evaluator> evaluators) {
         this.evaluators = evaluators;
         for (Evaluator evaluator : evaluators) {
-            evaluator.addScientificCommittee(this);
+            evaluator.setScientificCommittee(this);
         }
     }
 

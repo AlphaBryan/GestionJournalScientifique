@@ -6,12 +6,14 @@ public class EvaluatorDTO {
     private final String firstName;
     private final String lastName;
 
-    public EvaluatorDTO(Integer id, String firstName, String lastName) {
+    private final Integer committeeId;
+
+    public EvaluatorDTO(Integer id, String firstName, String lastName, Integer committeeId) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
+        this.committeeId = committeeId;
     }
-
 
     public Integer getId() {
         return id;
@@ -23,5 +25,9 @@ public class EvaluatorDTO {
 
     public String getLastName() {
         return lastName;
+    }
+
+    public Integer getCommitteeId() {
+        return committeeId;
     }
 }

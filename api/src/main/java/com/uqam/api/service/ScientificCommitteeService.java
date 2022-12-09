@@ -34,6 +34,7 @@ public class ScientificCommitteeService {
         for (Integer evaluatorId : evaluatorsId) {
             Optional<Evaluator> evaluator = evaluatorDAO.findById(evaluatorId);
             if (evaluator.isEmpty()) return null;
+            if (evaluator.get().getScientificCommittee() != null) return null;
             evaluators.add(evaluator.get());
         }
 
