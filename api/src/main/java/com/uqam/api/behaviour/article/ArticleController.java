@@ -2,18 +2,20 @@ package com.uqam.api.behaviour.article;
 
 import com.uqam.api.dto.ArticleDTO;
 import com.uqam.api.mapper.ArticleDTOMapper;
-import com.uqam.api.model.entity.Article;
-import com.uqam.api.model.entity.Author;
-import com.uqam.api.model.entity.Evaluation;
-import com.uqam.api.model.entity.Evaluator;
+import com.uqam.api.model.entity.*;
 import com.uqam.api.security.AuthenticatedAuthorFacade;
 import com.uqam.api.security.AuthenticatedEvaluatorFacade;
 import com.uqam.api.service.ArticleService;
+import com.uqam.api.service.VersionService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.core.env.Environment;
 
 import javax.validation.Valid;
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -26,11 +28,19 @@ public class ArticleController {
     private final AuthenticatedEvaluatorFacade authenticatedEvaluator;
     private final ArticleDTOMapper articleDTOMapper;
 
-    public ArticleController(ArticleService articleService, AuthenticatedAuthorFacade authenticatedAuthor, AuthenticatedEvaluatorFacade authenticatedEvaluator, ArticleDTOMapper articleDTOMapper) {
+
+
+
+
+    private final VersionService versionService;
+
+    public ArticleController( VersionService versionService, ArticleService articleService, AuthenticatedAuthorFacade authenticatedAuthor, AuthenticatedEvaluatorFacade authenticatedEvaluator, ArticleDTOMapper articleDTOMapper) {
+        this.versionService = versionService ;
         this.articleService = articleService;
         this.authenticatedAuthor = authenticatedAuthor;
         this.authenticatedEvaluator = authenticatedEvaluator;
         this.articleDTOMapper = articleDTOMapper;
+
     }
 
     @PreAuthorize("hasRole('AUTHOR')")
@@ -108,4 +118,23 @@ public class ArticleController {
 
         return ResponseEntity.ok().body(articleDTOMapper.toArticleDTO(article));
     }
+
+    @PreAuthorize("hasRole('AUTHOR')")
+    @PostMapping("/version/{articleId}")
+    public ResponseEntity<Object> createVersion(@PathVariable("articleId") Integer articleId, @RequestParam("file") MultipartFile file ) {
+        Author currentAuthor = authenticatedAuthor.getAuthenticatedAuthor();
+        Article article = null;
+        try {
+            article = versionService.createVersion(articleId, file);
+        } catch (Exception e) {
+           return ResponseEntity
+                    .internalServerError().body("Error during upload");
+        }
+        return ResponseEntity
+                .ok()
+                .body(article);
+    }
+
+
+
 }
