@@ -8,23 +8,14 @@ import FormControl from "@mui/material/FormControl";
 import FormLabel from "@mui/material/FormLabel";
 import RadioGroup from "@mui/material/RadioGroup";
 import Radio from "@mui/material/Radio";
+import { useLocation } from "react-router-dom";
 
 type Props = {};
 
 const Screen = (props: Props) => {
-  const article = {
-    title:
-      "Pourquoi nous sentons-nous toujours honteux en repensant aux souvenirs embarrassants?",
-    auteurs: [
-      "Bryan Mevo",
-      "Simon Moulin",
-      "Jean-Pierre Dupont",
-      "Jeanne Guillot",
-    ],
-    date: "Juin 2021",
-    categories: ["Sciences", "Psychologie", "Sociologie"],
-    description: "Quand cette fichue gaffe nous colle à la peau.",
-  };
+  const location = useLocation();
+  const article = location.state.data;
+  console.log(article);
 
   const [status, setStatus] = React.useState("accepte");
 
@@ -71,7 +62,7 @@ const Screen = (props: Props) => {
             <TextField
               id="outlined-read-only-input"
               label="Date"
-              defaultValue={article.date}
+              defaultValue={article.creation_date}
               InputProps={{
                 readOnly: true,
               }}
@@ -90,11 +81,11 @@ const Screen = (props: Props) => {
           marginBottom: "5%",
         }}
       />
-      {/* liste des auteurs */}
+      {/* liste des author */}
       <h4 style={{ marginTop: "5%" }}> &#9733; Auteurs </h4>
 
       <Box sx={{ flexGrow: 1 }}>
-        {article.auteurs.map((auteur, index) => (
+        {article.author.map((auteur: any, index: any) => (
           <Grid key={index} container spacing={2}>
             <Grid item xs={6} md={8}>
               <TextField

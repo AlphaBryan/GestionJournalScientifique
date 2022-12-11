@@ -18,7 +18,11 @@ export const AdminComites = () => {
     }, [dispatch]);
 
     const computeEvaluatorLabel = useCallback((evaluator: any) => {
-        return `${evaluator.firstName} ${evaluator.lastName} - ${evaluator.id}`;
+        console.log('evaluator', evaluator)
+        if (!evaluator) {
+            return '';
+        }
+        return `${evaluator?.firstName} ${evaluator?.lastName} - ${evaluator?.id}`;
     }, []);
 
     return (

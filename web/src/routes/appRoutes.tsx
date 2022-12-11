@@ -94,10 +94,10 @@ const EvaluateurRoutes: RouteType[] = [
         path: "/Article",
         element: <Articles/>,
         state: "article",
-        sidebarProps: {
-            displayText: "Article",
-            icon: <FileDownloadOutlinedIcon/>,
-        },
+        // sidebarProps: {
+        //     displayText: "Article",
+        //     icon: <FileDownloadOutlinedIcon/>,
+        // },
     },
     {
         path: "/Comite",
