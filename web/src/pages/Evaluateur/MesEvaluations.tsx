@@ -1,12 +1,22 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Box, Button, Typography } from "@mui/material";
 import { DataGrid, GridColDef, GridValueGetterParams } from "@mui/x-data-grid";
 import { useNavigate } from "react-router-dom";
+import { useAppDispatch } from "../../redux/store";
+import {
+  getCommitteeArticles,
+  getCurrentAuthorArticles,
+} from "../../redux/features/article/article-slice";
 
 type Props = {};
 
 const Screen = (props: Props) => {
   const navigate = useNavigate();
+  const dispatch = useAppDispatch();
+
+  useEffect(() => {
+    dispatch(getCommitteeArticles(35));
+  }, [dispatch]);
 
   const rows = [
     {
