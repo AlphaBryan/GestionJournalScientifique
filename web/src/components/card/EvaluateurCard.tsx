@@ -24,7 +24,7 @@ export default function EvaluateurCard(props: Props) {
     >
       <CardContent>
         <Typography gutterBottom variant="h5" component="div">
-          {evaluateur.nom}
+           {evaluateur.firstName} {evaluateur.lastName}
         </Typography>
         {/* <Typography
           gutterBottom
@@ -36,7 +36,8 @@ export default function EvaluateurCard(props: Props) {
           {evaluateur.nombresEvaluationDonnees} évaluations Données
         </Typography> */}
         <Typography variant="body2" color="text.secondary">
-          {evaluateur.email}
+          {/* {evaluateur.email} */}
+          xxxxx@hotmail.fr
         </Typography>
       </CardContent>
     </Card>
