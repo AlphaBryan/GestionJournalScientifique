@@ -45,7 +45,7 @@ public class ArticleController {
     public ResponseEntity<ArticleDTO> createArticle(@RequestBody @Valid CreateArticleRequest request) {
         Author currentAuthor = authenticatedAuthor.getAuthenticatedAuthor();
 
-        Article article = articleService.create(request.getTitle(), currentAuthor, request.getCategoriesId(), request.getAuthorsId(), request.getEditionId());
+        Article article = articleService.create(request.getTitle(), currentAuthor, request.getCategoriesId(), request.getAuthorsId(),request.getCorrespondantsId(), request.getEditionId());
 
         if (article == null) return ResponseEntity.badRequest().build();
 
@@ -125,7 +125,6 @@ public class ArticleController {
                     .ok()
                     .body(articleDTOMapper.toArticleDTO(article));
         } catch (Exception e) {
-            System.out.println(e);
             return ResponseEntity
                     .internalServerError().body("Error during upload");
         }

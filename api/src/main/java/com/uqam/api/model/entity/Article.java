@@ -24,6 +24,17 @@ public class Article {
     @ManyToMany(targetEntity = Author.class)
     private List<Author> authors;
 
+    public List<Author> getCorrespondants() {
+        return correspondants;
+    }
+
+    public void setCorrespondants(List<Author> correspondants) {
+        this.correspondants = correspondants;
+    }
+
+    @ManyToMany(targetEntity = Author.class)
+    private List<Author> correspondants;
+
     @OneToMany(targetEntity = Version.class, cascade = CascadeType.ALL)
     private List<Version> versions;
 
@@ -36,10 +47,11 @@ public class Article {
     protected Article() {
     }
 
-    public Article(String title, Set<Category> categories, List<Author> authors, Edition edition) {
+    public Article(String title, Set<Category> categories, List<Author> authors, List<Author> correspondants,  Edition edition) {
         this.title = title;
         this.categories = categories;
         this.authors = authors;
+        this.correspondants = correspondants ;
         List<Version> versions = new ArrayList<>();
         this.versions = versions;
         this.edition = edition;

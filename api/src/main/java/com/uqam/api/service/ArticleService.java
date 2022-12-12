@@ -2,6 +2,7 @@ package com.uqam.api.service;
 
 import com.uqam.api.model.dao.*;
 import com.uqam.api.model.entity.*;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.*;
@@ -17,6 +18,8 @@ public class ArticleService {
     private final AuthorDAO authorDAO;
     private final EditionDAO editionDAO;
     private final CategoryDAO categoryDAO;
+    @Autowired
+    private EmailService emailService;
 
     public ArticleService(VersionService versionService, ArticleDAO articleDAO, VersionDAO versionDAO, EvaluationDAO evaluationDAO, ScientificCommitteeDAO scientificCommitteeDAO, AuthorDAO authorDAO, EditionDAO editionDAO, CategoryDAO categoryDAO) {
         this.versionService = versionService;
@@ -60,6 +63,7 @@ public class ArticleService {
             Author firstAuthor,
             List<Integer> categoriesId,
             List<Integer> authorsId,
+            List<Integer> correspondantsId,
             Integer editionId
     ) {
         Optional<Edition> edition = editionDAO.findById(editionId);
@@ -75,6 +79,7 @@ public class ArticleService {
         }
 
         List<Author> authors = new ArrayList<>();
+        List<Author> correspondants = new ArrayList<>();
         authors.add(firstAuthor);
         for (Integer authorId : authorsId) {
             Optional<Author> author = authorDAO.findById(authorId);
@@ -82,10 +87,16 @@ public class ArticleService {
                 return null;
             }
             authors.add(author.get());
+            if(correspondantsId.contains(authorId)){
+                correspondants.add(author.get());
+            }
         }
 
-        Article article = new Article(title, categories, authors, edition.get());
-        return articleDAO.save(article);
+        Article article = new Article(title, categories, authors, correspondants, edition.get());
+        article =  articleDAO.save(article);
+        notifyCorrespondants(article);
+        return article ;
+
     }
 
     public Evaluation evaluate(Integer versionId, Integer articleId, Integer rate, String comment, boolean isCommentMajor, Evaluator evaluator) {
@@ -124,8 +135,24 @@ public class ArticleService {
         if (article.get().getPhase() != Phase.CAMERA_READY) return null;
 
         article.get().setPhase(Phase.READY_TO_PUBLISH);
-
+        notifyAuthors(article.get());
         return articleDAO.save(article.get());
+    }
+
+    public void notifyCorrespondants(Article article) {
+        List<Author> correspondants = article.getCorrespondants() ;
+        String message = String.format("Votre article: %s a été soumis pour évaluation. \\n Cordialement.", article.getTitle()) ;
+        for (Author correspondant:correspondants ) {
+            emailService.sendSimpleMessage(correspondant.getEmail(), "Soumission d'article",  message);
+        }
+    }
+
+    public void notifyAuthors(Article article) {
+        List<Author> correspondants = article.getAuthors() ;
+        String message = String.format("Votre article: %s a été publié. \\n Cordialement.", article.getTitle()) ;
+        for (Author author:correspondants ) {
+            emailService.sendSimpleMessage(author.getEmail(), "Soumission d'article",  message);
+        }
     }
 
 }

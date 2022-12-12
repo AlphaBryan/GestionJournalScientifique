@@ -16,6 +16,10 @@ public class CreateArticleRequest {
     @NotNull
     private List<Integer> authorsId;
 
+
+    @NotNull
+    private List<Integer> correspondantsId;
+
     @NotNull
     private Integer editionId;
 
@@ -35,4 +39,8 @@ public class CreateArticleRequest {
     public Integer getEditionId() {
         return editionId;
     }
+    public List<Integer> getCorrespondantsId() {
+        return correspondantsId;
+    }
+
 }

@@ -14,6 +14,7 @@ public class Author extends Person {
     @ManyToMany(fetch = FetchType.LAZY, mappedBy = "authors")
     private List<Article> articles;
 
+
     protected Author() {
         super();
     }
