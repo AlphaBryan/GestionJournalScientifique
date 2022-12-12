@@ -1,5 +1,5 @@
 import {createAsyncThunk, createSlice} from "@reduxjs/toolkit";
-import {get, handleHttpErrors, httpJson, post} from "../../httpUtil";
+import {get, handleHttpErrors, httpJson, post, put} from "../../httpUtil";
 import {Article} from "../../dto/Article";
 import {RootState} from "../../store";
 
@@ -16,6 +16,7 @@ const initialState: ArticleSlice = {
     authUserArticles: [],
 };
 
+export type SetArticleCommittee = { articleId: number, committeeId: number };
 export type CreateArticle = { title: string, text: File, categoriesId: string[], authorsId: string[], editionId: number };
 export const addArticle = createAsyncThunk(
     'articles/add',
@@ -42,6 +43,14 @@ export const getCurrentAuthorArticles = createAsyncThunk(
         const res = await httpJson(handleHttpErrors(get(`/articles/author/${authUser.id}/articles`)));
         return res;
     }
+);
+
+export const setArticleCommittee = createAsyncThunk(
+    'articles/set-committee',
+    async (request: SetArticleCommittee) => {
+        const res = await httpJson(handleHttpErrors(put(`/committees/${request.committeeId}/articles`, {articleId: request.articleId})));
+        return request;
+    }
 )
 
 export const articleSlice = createSlice({
@@ -58,6 +67,9 @@ export const articleSlice = createSlice({
         });
         builder.addCase(getCurrentAuthorArticles.fulfilled, (state, action) => {
             state.authUserArticles = action.payload;
+        });
+        builder.addCase(setArticleCommittee.fulfilled, (state, action) => {
+
         });
     }
 });

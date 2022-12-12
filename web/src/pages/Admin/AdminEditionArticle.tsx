@@ -1,5 +1,6 @@
 import {
     Box,
+    Button,
     Card,
     CardContent,
     CardHeader,
@@ -13,17 +14,21 @@ import {
 import Typography from "@mui/material/Typography";
 import {getPhaseLabel} from "../../utils/phase";
 import * as React from "react";
-import {useEffect, useState} from "react";
+import {useCallback, useEffect, useState} from "react";
 import {useParams} from "react-router-dom";
 import {useAppDispatch, useAppSelector} from "../../redux/store";
 import {getEditionArticles, getEditions} from "../../redux/features/edition/edition-slice";
 import dayjs from "dayjs";
 import {getCommittees} from "../../redux/features/committee/committee-slice";
+import {computeCommitteeLabel} from "../../utils/committee";
+import {Committee} from "../../redux/dto/Committee";
+import {setArticleCommittee} from "../../redux/features/article/article-slice";
 
 
 export const AdminEditionArticle = () => {
     const {editionId, articleId} = useParams();
 
+    const isLoading = useAppSelector(state => state.appState.isLoading);
     const edition = useAppSelector(state => state.edition.editions).find(e => e.id === parseInt(editionId as string, 10));
     const article = edition?.articles?.find(a => a.id === parseInt(articleId as string, 10));
 
@@ -45,6 +50,11 @@ export const AdminEditionArticle = () => {
     }, [dispatch, edition, article]);
 
     const [committeeId, setCommitteeId] = useState<number | ''>('');
+
+    const saveCommittee = useCallback(() => {
+        if (!article || article.committee || !committeeId) return;
+        dispatch(setArticleCommittee({articleId: article.id, committeeId: committeeId}));
+    }, [dispatch, article, committeeId]);
 
     if (!article) return null;
 
@@ -80,6 +90,7 @@ export const AdminEditionArticle = () => {
                         labelId="committee-label"
                         id="committee"
                         value={committeeId}
+                        disabled={!!article.committee}
                         onChange={(event) => {
                             const {target: {value}} = event;
                             setCommitteeId(value as number);
@@ -89,7 +100,7 @@ export const AdminEditionArticle = () => {
                         renderValue={(selected) => (
                             <Box sx={{display: 'flex', flexWrap: 'wrap', gap: 0.5}}>
                                 <Chip key={selected}
-                                      label={committees.find(c => c.id === selected)?.id}/>
+                                      label={computeCommitteeLabel(committees.find(c => c.id === selected) as Committee)}/>
                             </Box>
                         )}
                     >
@@ -99,9 +110,11 @@ export const AdminEditionArticle = () => {
                                 value={committee.id}
                             >
                                 <Checkbox checked={committeeId === committee.id}/>
-                                <ListItemText primary={committee.id}/></MenuItem>
+                                <ListItemText primary={computeCommitteeLabel(committee)}/></MenuItem>
                         ))}
                     </Select>
+                    <Button variant='contained' style={{marginTop: 20}} type='button' onClick={saveCommittee}
+                            disabled={!!article.committee || isLoading}>Sauvegarder</Button>
 
                 </CardContent>
             </Card>
