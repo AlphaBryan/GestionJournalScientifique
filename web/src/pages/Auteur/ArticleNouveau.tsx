@@ -7,18 +7,21 @@ import {Author} from "../../redux/dto/Author";
 import {addArticle} from "../../redux/features/article/article-slice";
 import {getEditions} from "../../redux/features/edition/edition-slice";
 import dayjs from "dayjs";
+import {useNavigate} from "react-router-dom";
 
 const ArticleNouveau = () => {
 
     const dispatch = useAppDispatch();
+    const navigate = useNavigate();
 
     const categories = useAppSelector(state => state.category.categories);
     const authors = useAppSelector(state => state.author.authors);
     const editions = useAppSelector(state => state.edition.editions);
     const authUser = useAppSelector(state => state.auth.authUser);
+    const createdArticle = useAppSelector(state => state.article.createdArticle);
 
     const [title, setTitle] = useState('');
-    const [text, setText] = useState('');
+    const [file, setFile] = useState<File | undefined>(undefined);
     const [editionId, setEditionId] = useState<number | string>('');
     const [categoriesId, setCategoriesId] = useState<string[]>([]);
     const [authorsId, setAuthorsId] = useState<string[]>([]);
@@ -29,17 +32,23 @@ const ArticleNouveau = () => {
 
     const handleSubmit = useCallback((event: FormEvent) => {
         event.preventDefault();
-        if (typeof editionId !== "number") return;
-        dispatch(addArticle({title, text, categoriesId, authorsId, editionId}));
+        if (typeof editionId !== "number" || !file) return;
+        dispatch(addArticle({title, text: file, categoriesId, authorsId, editionId}));
 
         // TODO redirect to created article
-    }, [title, text, categoriesId, authorsId]);
+    }, [title, file, categoriesId, authorsId]);
 
     useEffect(() => {
         dispatch(getCategories());
         dispatch(getAuthors());
         dispatch(getEditions());
     }, [dispatch]);
+
+    useEffect(() => {
+        if (createdArticle) {
+            navigate(`/article/${createdArticle.id}`);
+        }
+    }, [createdArticle, navigate]);
 
     return (
         <div>
@@ -184,17 +193,12 @@ const ArticleNouveau = () => {
                         }}
                     />
                     <div>
-                        <h2> Fichers </h2>
-                        <TextField
-                            id="filled-multiline-flexible"
-                            label="Multiline"
-                            multiline
-                            maxRows={4}
-                            value={text}
-                            onChange={(e) => setText(e.target.value)}
-                            variant="filled"
-                            sx={{width: "90%", marginLeft: "5%", marginBottom: "3%"}}
-                        />
+                        <h2> Article au format PDF </h2>
+                        <Button variant="contained" component="label">
+                            Sélectionner un fichier
+                            <input hidden accept="application/pdf" type="file"
+                                   onChange={(event) => setFile(event.currentTarget.files ? event.currentTarget.files[0] : undefined)}/>
+                        </Button>
                     </div>
                 </div>
                 <div>

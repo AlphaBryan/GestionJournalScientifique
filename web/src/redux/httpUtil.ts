@@ -1,17 +1,19 @@
-const API_URL = "http://localhost:7800";
-type Options = { noAuth: boolean };
+export const API_URL = "http://localhost:7800";
+type Options = { noAuth?: boolean, contentType?: string };
 
 export const post = (path: string, body: any, options?: Options) => {
     const headers: Record<string, string> = {
-        'Content-Type': 'application/json',
         'Accept': 'application/json',
     };
+    if (!options || !options.contentType) {
+        headers['Content-Type'] = 'application/json';
+    }
     if (!options || !options.noAuth) {
         headers['Authorization'] = `Bearer ${localStorage.getItem('token')}`;
     }
     return fetch(`${API_URL}${path}`, {
         method: 'POST',
-        body: JSON.stringify(body),
+        body: options?.contentType === undefined ? JSON.stringify(body) : body,
         headers,
     });
 }

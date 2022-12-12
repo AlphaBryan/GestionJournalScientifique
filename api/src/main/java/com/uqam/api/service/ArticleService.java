@@ -9,6 +9,7 @@ import java.util.*;
 @Component
 public class ArticleService {
 
+    private final VersionService versionService;
     private final ArticleDAO articleDAO;
     private final VersionDAO versionDAO;
     private final EvaluationDAO evaluationDAO;
@@ -17,7 +18,8 @@ public class ArticleService {
     private final EditionDAO editionDAO;
     private final CategoryDAO categoryDAO;
 
-    public ArticleService(ArticleDAO articleDAO, VersionDAO versionDAO, EvaluationDAO evaluationDAO, ScientificCommitteeDAO scientificCommitteeDAO, AuthorDAO authorDAO, EditionDAO editionDAO, CategoryDAO categoryDAO) {
+    public ArticleService(VersionService versionService, ArticleDAO articleDAO, VersionDAO versionDAO, EvaluationDAO evaluationDAO, ScientificCommitteeDAO scientificCommitteeDAO, AuthorDAO authorDAO, EditionDAO editionDAO, CategoryDAO categoryDAO) {
+        this.versionService = versionService;
         this.articleDAO = articleDAO;
         this.versionDAO = versionDAO;
         this.evaluationDAO = evaluationDAO;
@@ -55,7 +57,6 @@ public class ArticleService {
 
     public Article create(
             String title,
-            String text,
             Author firstAuthor,
             List<Integer> categoriesId,
             List<Integer> authorsId,
@@ -83,8 +84,8 @@ public class ArticleService {
             authors.add(author.get());
         }
 
-        Version version = new Version(text);
-        return articleDAO.save(new Article(title, categories, authors, version, edition.get()));
+        Article article = new Article(title, categories, authors, edition.get());
+        return articleDAO.save(article);
     }
 
     public Evaluation evaluate(Integer versionId, Integer articleId, Integer rate, String comment, boolean isCommentMajor, Evaluator evaluator) {

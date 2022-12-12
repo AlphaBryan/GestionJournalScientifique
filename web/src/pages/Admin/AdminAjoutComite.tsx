@@ -39,7 +39,7 @@ export const AdminAjoutComite = () => {
         event.preventDefault();
         await dispatch(addCommittee({evaluatorsId: evaluatorsId.map(id => parseInt(id, 10))}));
         navigate('/comites');
-    }, [dispatch, evaluatorsId]);
+    }, [dispatch, evaluatorsId, navigate]);
 
     const handleChange = (event: SelectChangeEvent<typeof evaluatorsId>) => {
         const {target: {value}} = event;

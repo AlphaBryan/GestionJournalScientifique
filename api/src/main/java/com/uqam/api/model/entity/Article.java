@@ -36,12 +36,11 @@ public class Article {
     protected Article() {
     }
 
-    public Article(String title, Set<Category> categories, List<Author> authors, Version version, Edition edition) {
+    public Article(String title, Set<Category> categories, List<Author> authors, Edition edition) {
         this.title = title;
         this.categories = categories;
         this.authors = authors;
         List<Version> versions = new ArrayList<>();
-        versions.add(version);
         this.versions = versions;
         this.edition = edition;
         this.phase = Phase.CREATED;
@@ -90,6 +89,7 @@ public class Article {
             this.phase = Phase.RELECTURE;
         }
     }
+
     public void addVersion(Version version) {
 
         this.versions.add(version);
