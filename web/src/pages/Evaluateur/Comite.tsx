@@ -1,9 +1,23 @@
-import React from "react";
+import { GridSelectionModel } from "@mui/x-data-grid";
+import React, { useEffect, useState, useCallback } from "react";
 import EvaluateurCard from "../../components/card/EvaluateurCard";
+import { getCommittees } from "../../redux/features/committee/committee-slice";
+import { getEvaluators } from "../../redux/features/evaluator/evaluator-slice";
+import { useAppDispatch, useAppSelector } from "../../redux/store";
 
 type Props = {};
 
 const Screen = (props: Props) => {
+  const dispatch = useAppDispatch();
+
+  const evaluators0 = useAppSelector((state) => state.evaluator.evaluators);
+
+  const [selectionModel, setSelectionModel] = useState<GridSelectionModel>([]);
+    useEffect(() => {
+      dispatch(getEvaluators());
+    }, [dispatch]);
+
+    
   const evaluateurs = [
     {
       nom: "Martin Matin",
@@ -24,6 +38,8 @@ const Screen = (props: Props) => {
       nombresEvaluationDonnees: 2,
     },
   ];
+
+
 
   return (
     <div>
