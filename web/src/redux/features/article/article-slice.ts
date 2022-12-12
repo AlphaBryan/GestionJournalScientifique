@@ -16,12 +16,21 @@ const initialState: ArticleSlice = {
     authUserArticles: [],
 };
 
-export type CreateArticle = { title: string, text: string, categoriesId: string[], authorsId: string[], editionId: number };
+export type CreateArticle = { title: string, text: File, categoriesId: string[], authorsId: string[], editionId: number };
 export const addArticle = createAsyncThunk(
     'articles/add',
     async (article: CreateArticle) => {
-        const res = await httpJson(handleHttpErrors(post('/articles/', article)));
-        return res;
+        const req = {
+            title: article.title,
+            authorsId: article.authorsId,
+            categoriesId: article.categoriesId,
+            editionId: article.editionId
+        };
+        const data = new FormData()
+        data.append('file', article.text);
+        const articleRes = await httpJson(handleHttpErrors(post('/articles/', req)));
+        const versionRes = await httpJson(handleHttpErrors(post(`/articles/${articleRes.id}/versions`, data, {contentType: 'noJson'})))
+        return versionRes;
     }
 );
 
@@ -39,8 +48,8 @@ export const articleSlice = createSlice({
     name: 'article',
     initialState,
     reducers: {
-        setSelectedArticle: (state, action) => {
-            state.selectedArticle = action.payload;
+        cleanCreatedArticle: (state) => {
+            state.createdArticle = undefined;
         }
     },
     extraReducers(builder) {

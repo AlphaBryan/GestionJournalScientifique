@@ -11,15 +11,16 @@ import {
     Tabs
 } from "@mui/material";
 import {useParams} from "react-router-dom";
-import {getCurrentAuthorArticles} from "../../redux/features/article/article-slice";
+import {articleActions, getCurrentAuthorArticles} from "../../redux/features/article/article-slice";
 import * as React from "react";
-import {useEffect, useState} from "react";
+import {useEffect, useRef, useState} from "react";
 import dayjs from "dayjs";
 import Typography from "@mui/material/Typography";
 import {Version} from "../../redux/dto/Version";
 import {ExpandMore} from "@mui/icons-material";
-import {Document} from "react-pdf";
+import {Document, Page} from "react-pdf";
 import {getPhaseLabel} from "../../utils/phase";
+import {API_URL} from "../../redux/httpUtil";
 
 interface RenderVersionProps {
     version: Version;
@@ -29,6 +30,13 @@ const RenderVersion = (props: RenderVersionProps) => {
     const {version} = props;
 
     const [selectedTab, setSelectedTab] = useState(0);
+    const [numPages, setNumPages] = useState<number | null>(null);
+    const containerRef = useRef<HTMLDivElement>(null);
+
+    function onDocumentLoadSuccess({numPages}: { numPages: number }) {
+        setNumPages(numPages);
+    }
+
     return (
         <Accordion>
             <AccordionSummary
@@ -43,9 +51,24 @@ const RenderVersion = (props: RenderVersionProps) => {
                         <Tab label="Evaluations"/>
                     </Tabs>
                 </Box>
-                {selectedTab === 0 ? (
-                    <Document file={''}/>
-                ) : null}
+                <div style={{width: '100%'}} ref={containerRef}>
+                    {selectedTab === 0 ? (
+                        <Document file={`${API_URL}/uploads/${version.text}`} onLoadSuccess={onDocumentLoadSuccess}>
+                            {Array.from(
+                                new Array(numPages),
+                                (el, index) => (
+                                    <Page
+                                        key={`page_${index + 1}`}
+                                        pageNumber={index + 1}
+                                        width={containerRef.current?.offsetWidth}
+                                        renderTextLayer={false}
+                                        renderAnnotationLayer={false}
+                                    />
+                                ),
+                            )}
+                        </Document>
+                    ) : null}
+                </div>
 
             </AccordionDetails>
         </Accordion>
@@ -63,6 +86,9 @@ export const AuteurArticle = (props: any) => {
             dispatch(getCurrentAuthorArticles());
         }
     }, [dispatch, article]);
+    useEffect(() => {
+        dispatch(articleActions.cleanCreatedArticle());
+    }, [dispatch]);
 
     if (!article) return null;
 
@@ -92,7 +118,7 @@ export const AuteurArticle = (props: any) => {
 
                 </Typography>
                 <CardContent>
-                    {article.versions.map(version => <RenderVersion version={version}/>)}
+                    {article.versions.map(version => <RenderVersion key={version.id} version={version}/>)}
                 </CardContent>
             </Card>
         </div>

@@ -17,14 +17,8 @@ public class CreateArticleRequest {
     private List<Integer> authorsId;
 
     @NotNull
-    private String text;
-
-    @NotNull
     private Integer editionId;
 
-    public String getText() {
-        return text;
-    }
 
     public List<Integer> getAuthorsId() {
         return authorsId;
