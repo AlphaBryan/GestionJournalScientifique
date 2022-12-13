@@ -71,6 +71,30 @@ const RenderVersion = (props: RenderVersionProps) => {
                             )}
                         </Document>
                     ) : null}
+                    {selectedTab === 1 ? (
+                        <div>
+                            {version.evaluations.map(evaluation => (
+                                <Card style={{marginTop: 20}}>
+                                    <CardHeader
+                                        title={`Evaluation de ${evaluation.evaluator.firstName} ${evaluation.evaluator.lastName}`}
+                                    />
+                                    <CardContent>
+                                        <div>
+                                            <span
+                                                style={{fontWeight: 'bold'}}>Note: </span><span>{evaluation.rate}/3</span>
+                                        </div>
+                                        <div>
+                                            <span
+                                                style={{
+                                                    fontWeight: 'bold',
+                                                    display: 'block'
+                                                }}>Commentaire {evaluation.commentMajor ? '(majeur)' : '(mineur)'}: </span><span>{evaluation.comment}</span>
+                                        </div>
+                                    </CardContent>
+                                </Card>
+                            ))}
+                        </div>
+                    ) : null}
                 </div>
 
             </AccordionDetails>
