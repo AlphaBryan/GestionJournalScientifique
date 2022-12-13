@@ -1,5 +1,5 @@
 import {createAsyncThunk, createSlice} from "@reduxjs/toolkit";
-import {get, handleHttpErrors, httpJson, post} from "../../httpUtil";
+import {get, handleHttpErrors, httpJson, post, put} from "../../httpUtil";
 import {Edition} from "../../dto/Edition";
 
 type CreateEdition = {
@@ -36,6 +36,22 @@ export const getEditionArticles = createAsyncThunk(
         const res = await httpJson(handleHttpErrors(get(`/articles/edition/${editionId}/articles`)));
         return {editionId, data: res};
     }
+);
+
+export const startEditionCameryReadyPhase = createAsyncThunk(
+    'editions/start-camera-ready-phase',
+    async (editionId: number) => {
+        const res = await httpJson(handleHttpErrors(put(`/editions/${editionId}/start-camera-ready`, {})))
+        return res;
+    }
+);
+
+export const publishEdition = createAsyncThunk(
+    'editions/publish',
+    async (editionId: number) => {
+        const res = await httpJson(handleHttpErrors(put(`/editions/${editionId}/publish`, {})));
+        return res;
+    }
 )
 
 export const editionSlice = createSlice({
@@ -55,6 +71,21 @@ export const editionSlice = createSlice({
                 edition.articles = action.payload.data;
             }
         });
+        builder.addCase(startEditionCameryReadyPhase.fulfilled, (state, action) => {
+            const edition = state.editions.find(e => e.id === action.payload.id);
+            if (edition) {
+                edition.phase = action.payload.phase;
+                edition.articles = undefined;
+            }
+        });
+        builder.addCase(publishEdition.fulfilled, (state, action) => {
+            const edition = state.editions.find(e => e.id === action.payload.id);
+            if (edition) {
+                edition.phase = action.payload.phase;
+                edition.articles = undefined;
+            }
+        });
+
     }
 })
 

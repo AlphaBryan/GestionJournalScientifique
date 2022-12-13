@@ -1,5 +1,7 @@
 package com.uqam.api.dto;
 
+import com.uqam.api.model.entity.EditionPhase;
+
 import java.sql.Timestamp;
 
 public class EditionDTO {
@@ -10,10 +12,13 @@ public class EditionDTO {
 
     private final Timestamp submissionLimitDate;
 
-    public EditionDTO(Integer id, String name, Timestamp submissionLimitDate) {
+    private final EditionPhase phase;
+
+    public EditionDTO(Integer id, String name, Timestamp submissionLimitDate, EditionPhase phase) {
         this.id = id;
         this.name = name;
         this.submissionLimitDate = submissionLimitDate;
+        this.phase = phase;
     }
 
     public Integer getId() {
@@ -26,5 +31,9 @@ public class EditionDTO {
 
     public Timestamp getSubmissionLimitDate() {
         return submissionLimitDate;
+    }
+
+    public EditionPhase getPhase() {
+        return phase;
     }
 }

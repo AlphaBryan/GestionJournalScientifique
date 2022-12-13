@@ -4,6 +4,7 @@ import com.uqam.api.model.dao.ArticleDAO;
 import com.uqam.api.model.dao.EditionDAO;
 import com.uqam.api.model.entity.Article;
 import com.uqam.api.model.entity.Edition;
+import com.uqam.api.model.entity.EditionPhase;
 import com.uqam.api.model.entity.Phase;
 import org.springframework.stereotype.Component;
 
@@ -56,7 +57,8 @@ public class EditionService {
             }
         }
 
-        return edition.get();
+        edition.get().setPhase(EditionPhase.CAMERA_READY);
+        return editionDAO.save(edition.get());
     }
 
     public Edition publishArticles(Integer editionId) {
@@ -71,7 +73,8 @@ public class EditionService {
             }
         }
 
-        return edition.get();
+        edition.get().setPhase(EditionPhase.PUBLISHED);
+        return editionDAO.save(edition.get());
     }
 
 }

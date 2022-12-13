@@ -35,6 +35,16 @@ export const addArticle = createAsyncThunk(
     }
 );
 
+export const addVersion = createAsyncThunk(
+    'articles/add-version',
+    async (request: { file: File, articleId: number }) => {
+        const data = new FormData();
+        data.append('file', request.file);
+        const versionRes = await httpJson(handleHttpErrors(post(`/articles/${request.articleId}/versions`, data, {contentType: 'noJson'})));
+        return versionRes;
+    }
+)
+
 export const getCurrentAuthorArticles = createAsyncThunk(
     'articles/get-current-author',
     async (_, {getState}) => {
@@ -51,7 +61,7 @@ export const setArticleCommittee = createAsyncThunk(
         const res = await httpJson(handleHttpErrors(put(`/committees/${request.committeeId}/articles`, {articleId: request.articleId})));
         return request;
     }
-)
+);
 
 export const articleSlice = createSlice({
     name: 'article',
@@ -71,6 +81,12 @@ export const articleSlice = createSlice({
         builder.addCase(setArticleCommittee.fulfilled, (state, action) => {
 
         });
+        builder.addCase(addVersion.fulfilled, (state, action) => {
+            const article = state.authUserArticles.find(a => a.id === action.payload.id);
+            if (article) {
+                article.versions = action.payload.versions;
+            }
+        })
     }
 });
 

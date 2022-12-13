@@ -55,11 +55,11 @@ public class EditionController {
 
     @PreAuthorize("hasRole('ADMIN')")
     @PutMapping("/{editionId}/start-camera-ready")
-    public ResponseEntity<Object> startCameraReadyPhase(@PathVariable("editionId") Integer editionId) {
+    public ResponseEntity<EditionDTO> startCameraReadyPhase(@PathVariable("editionId") Integer editionId) {
         Edition edition = editionService.startCameraReadyPhase(editionId);
         if (edition == null) return ResponseEntity.notFound().build();
 
-        return ResponseEntity.ok().build();
+        return ResponseEntity.ok().body(editionDTOMapper.toEditionDTO(edition));
     }
 
     @PreAuthorize("hasRole('ADMIN')")
@@ -68,7 +68,7 @@ public class EditionController {
         Edition edition = editionService.publishArticles(editionId);
         if (edition == null) return ResponseEntity.notFound().build();
 
-        return ResponseEntity.ok().build();
+        return ResponseEntity.ok().body(editionDTOMapper.toEditionDTO(edition));
     }
 
 }

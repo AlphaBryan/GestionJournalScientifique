@@ -9,6 +9,6 @@ import org.springframework.stereotype.Component;
 public class EditionDTOMapperImpl implements EditionDTOMapper {
     @Override
     public EditionDTO toEditionDTO(Edition edition) {
-        return new EditionDTO(edition.getId(), edition.getName(), edition.getSubmissionLimitDate());
+        return new EditionDTO(edition.getId(), edition.getName(), edition.getSubmissionLimitDate(), edition.getPhase());
     }
 }
