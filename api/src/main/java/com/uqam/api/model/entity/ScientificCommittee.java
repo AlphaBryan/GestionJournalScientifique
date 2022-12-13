@@ -18,7 +18,7 @@ public class ScientificCommittee {
     )
     private List<Evaluator> evaluators;
 
-    @OneToMany(targetEntity = Article.class)
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "scientificCommittee")
     private List<Article> articles;
 
     protected ScientificCommittee() {
