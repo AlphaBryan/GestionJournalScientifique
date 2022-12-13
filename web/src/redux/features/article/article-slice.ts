@@ -1,15 +1,7 @@
-<<<<<<< Updated upstream
-import {createAsyncThunk, createSlice} from "@reduxjs/toolkit";
-import {get, handleHttpErrors, httpJson, post, put} from "../../httpUtil";
-import {Article} from "../../dto/Article";
-import {RootState} from "../../store";
-
-=======
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { get, handleHttpErrors, httpJson, post } from "../../httpUtil";
+import { get, handleHttpErrors, httpJson, post, put } from "../../httpUtil";
 import { Article } from "../../dto/Article";
 import { RootState } from "../../store";
->>>>>>> Stashed changes
 
 export interface ArticleSlice {
   createdArticle?: Article;
@@ -23,10 +15,7 @@ const initialState: ArticleSlice = {
   authUserArticles: [],
 };
 
-<<<<<<< Updated upstream
-export type SetArticleCommittee = { articleId: number, committeeId: number };
-export type CreateArticle = { title: string, text: File, categoriesId: string[], authorsId: string[], editionId: number };
-=======
+export type SetArticleCommittee = { articleId: number; committeeId: number };
 export type CreateArticle = {
   title: string;
   text: File;
@@ -34,7 +23,6 @@ export type CreateArticle = {
   authorsId: string[];
   editionId: number;
 };
->>>>>>> Stashed changes
 export const addArticle = createAsyncThunk(
   "articles/add",
   async (article: CreateArticle) => {
@@ -61,24 +49,6 @@ export const addArticle = createAsyncThunk(
 );
 
 export const getCurrentAuthorArticles = createAsyncThunk(
-<<<<<<< Updated upstream
-    'articles/get-current-author',
-    async (_, {getState}) => {
-        const state: RootState = getState() as RootState;
-        const authUser = state.auth.authUser;
-        const res = await httpJson(handleHttpErrors(get(`/articles/author/${authUser.id}/articles`)));
-        return res;
-    }
-);
-
-export const setArticleCommittee = createAsyncThunk(
-    'articles/set-committee',
-    async (request: SetArticleCommittee) => {
-        const res = await httpJson(handleHttpErrors(put(`/committees/${request.committeeId}/articles`, {articleId: request.articleId})));
-        return request;
-    }
-)
-=======
   "articles/get-current-author",
   async (_, { getState }) => {
     const state: RootState = getState() as RootState;
@@ -87,6 +57,20 @@ export const setArticleCommittee = createAsyncThunk(
       handleHttpErrors(get(`/articles/author/${authUser.id}/articles`))
     );
     return res;
+  }
+);
+
+export const setArticleCommittee = createAsyncThunk(
+  "articles/set-committee",
+  async (request: SetArticleCommittee) => {
+    const res = await httpJson(
+      handleHttpErrors(
+        put(`/committees/${request.committeeId}/articles`, {
+          articleId: request.articleId,
+        })
+      )
+    );
+    return request;
   }
 );
 
@@ -100,7 +84,6 @@ export const getCommitteeArticles = createAsyncThunk(
     return res;
   }
 );
->>>>>>> Stashed changes
 
 export const articleSlice = createSlice({
   name: "article",
@@ -109,19 +92,6 @@ export const articleSlice = createSlice({
     cleanCreatedArticle: (state) => {
       state.createdArticle = undefined;
     },
-<<<<<<< Updated upstream
-    extraReducers(builder) {
-        builder.addCase(addArticle.fulfilled, (state, action) => {
-            state.createdArticle = action.payload;
-        });
-        builder.addCase(getCurrentAuthorArticles.fulfilled, (state, action) => {
-            state.authUserArticles = action.payload;
-        });
-        builder.addCase(setArticleCommittee.fulfilled, (state, action) => {
-
-        });
-    }
-=======
   },
   extraReducers(builder) {
     builder.addCase(addArticle.fulfilled, (state, action) => {
@@ -130,8 +100,8 @@ export const articleSlice = createSlice({
     builder.addCase(getCurrentAuthorArticles.fulfilled, (state, action) => {
       state.authUserArticles = action.payload;
     });
+    builder.addCase(setArticleCommittee.fulfilled, (state, action) => {});
   },
->>>>>>> Stashed changes
 });
 
 export const articleActions = articleSlice.actions;
