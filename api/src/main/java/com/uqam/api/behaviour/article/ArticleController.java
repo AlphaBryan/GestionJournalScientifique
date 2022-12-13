@@ -4,7 +4,6 @@ import com.uqam.api.dto.ArticleDTO;
 import com.uqam.api.mapper.ArticleDTOMapper;
 import com.uqam.api.model.entity.Article;
 import com.uqam.api.model.entity.Author;
-import com.uqam.api.model.entity.Evaluation;
 import com.uqam.api.model.entity.Evaluator;
 import com.uqam.api.security.AuthenticatedAuthorFacade;
 import com.uqam.api.security.AuthenticatedEvaluatorFacade;
@@ -101,10 +100,10 @@ public class ArticleController {
     public ResponseEntity<Object> evaluateArticleVersion(@PathVariable("articleId") Integer articleId, @PathVariable("versionId") Integer versionId, @RequestBody @Valid EvaluateArticleVersionRequest request) {
         Evaluator evaluator = authenticatedEvaluator.getAuthenticatedEvaluator();
 
-        Evaluation evaluation = articleService.evaluate(versionId, articleId, request.getRate(), request.getComment(), request.isCommentMajor(), evaluator);
-        if (evaluation == null) return ResponseEntity.badRequest().build();
+        Article article = articleService.evaluate(versionId, articleId, request.getRate(), request.getComment(), request.isCommentMajor(), evaluator);
+        if (article == null) return ResponseEntity.badRequest().build();
 
-        return ResponseEntity.ok().build();
+        return ResponseEntity.ok().body(articleDTOMapper.toArticleDTO(article));
     }
 
     @PreAuthorize("hasRole('EVALUATOR') && canEvaluate(#articleId)")

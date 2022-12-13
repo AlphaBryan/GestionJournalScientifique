@@ -2,6 +2,7 @@ package com.uqam.api.model.entity;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -15,10 +16,10 @@ public class Version {
 
     private Timestamp creationDate;
 
-    @ManyToOne(targetEntity = Article.class)
+    @ManyToOne(fetch = FetchType.LAZY, targetEntity = Article.class)
     private Article article;
 
-    @OneToMany(targetEntity = Evaluation.class)
+    @OneToMany(targetEntity = Evaluation.class, cascade = CascadeType.ALL)
     private List<Evaluation> evaluations;
 
     protected Version() {
@@ -27,6 +28,7 @@ public class Version {
     public Version(String text) {
         this.text = text;
         this.creationDate = new Timestamp(System.currentTimeMillis());
+        this.evaluations = new ArrayList<>();
     }
 
     public Integer getId() {
@@ -45,7 +47,16 @@ public class Version {
         return article;
     }
 
+    public void setArticle(Article article) {
+        this.article = article;
+    }
+
     public List<Evaluation> getEvaluations() {
         return evaluations;
+    }
+
+    public void addEvaluation(Evaluation evaluation) {
+        evaluations.add(evaluation);
+        evaluation.setVersion(this);
     }
 }
