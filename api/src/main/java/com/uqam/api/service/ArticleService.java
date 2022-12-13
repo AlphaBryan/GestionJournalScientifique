@@ -88,7 +88,7 @@ public class ArticleService {
         return articleDAO.save(article);
     }
 
-    public Evaluation evaluate(Integer versionId, Integer articleId, Integer rate, String comment, boolean isCommentMajor, Evaluator evaluator) {
+    public Article evaluate(Integer versionId, Integer articleId, Integer rate, String comment, boolean isCommentMajor, Evaluator evaluator) {
         Optional<Version> version = versionDAO.findById(versionId);
         if (version.isEmpty()) return null;
 
@@ -100,7 +100,9 @@ public class ArticleService {
             if (Objects.equals(evaluation.getEvaluator().getId(), evaluator.getId())) return null;
         }
 
-        return evaluationDAO.save(new Evaluation(rate, comment, isCommentMajor, version.get(), evaluator));
+        version.get().addEvaluation(new Evaluation(rate, comment, isCommentMajor, evaluator));
+        versionDAO.save(version.get());
+        return version.get().getArticle();
     }
 
     public ScientificCommittee affectToScientificCommittee(Integer articleId, Integer committeeId) {

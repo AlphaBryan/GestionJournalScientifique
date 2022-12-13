@@ -15,6 +15,8 @@ public class Edition {
 
     private Timestamp submissionLimitDate;
 
+    private EditionPhase phase;
+
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "edition")
     private Set<Article> articles;
 
@@ -25,6 +27,7 @@ public class Edition {
     public Edition(String name, Timestamp submissionLimitDate) {
         this.name = name;
         this.submissionLimitDate = submissionLimitDate;
+        this.phase = EditionPhase.RELECTURE;
     }
 
     public Integer getId() {
@@ -49,5 +52,13 @@ public class Edition {
 
     public Set<Article> getArticles() {
         return articles;
+    }
+
+    public EditionPhase getPhase() {
+        return phase;
+    }
+
+    public void setPhase(EditionPhase phase) {
+        this.phase = phase;
     }
 }

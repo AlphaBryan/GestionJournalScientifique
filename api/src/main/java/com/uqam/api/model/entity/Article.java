@@ -91,7 +91,7 @@ public class Article {
     }
 
     public void addVersion(Version version) {
-
         this.versions.add(version);
+        version.setArticle(this);
     }
 }

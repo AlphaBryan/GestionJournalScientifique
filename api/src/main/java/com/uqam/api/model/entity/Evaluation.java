@@ -18,25 +18,28 @@ public class Evaluation {
 
     private boolean isCommentMajor;
 
-    @OneToOne(targetEntity = Version.class)
+    @ManyToOne(targetEntity = Version.class)
     private Version version;
 
-    @OneToOne(targetEntity = Evaluator.class)
+    @ManyToOne(targetEntity = Evaluator.class)
     private Evaluator evaluator;
 
     protected Evaluation() {
     }
 
-    public Evaluation(Integer rate, String comment, boolean isCommentMajor, Version version, Evaluator evaluator) {
+    public Evaluation(Integer rate, String comment, boolean isCommentMajor, Evaluator evaluator) {
         this.rate = rate;
         this.comment = comment;
         this.isCommentMajor = isCommentMajor;
-        this.version = version;
         this.evaluator = evaluator;
     }
 
     public Version getVersion() {
         return version;
+    }
+
+    public void setVersion(Version version) {
+        this.version = version;
     }
 
     public Integer getRate() {
@@ -49,5 +52,13 @@ public class Evaluation {
 
     public Evaluator getEvaluator() {
         return evaluator;
+    }
+
+    public Integer getId() {
+        return id;
+    }
+
+    public String getComment() {
+        return comment;
     }
 }

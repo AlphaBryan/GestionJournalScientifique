@@ -1,4 +1,5 @@
 import {Article} from "../redux/dto/Article";
+import {Edition} from "../redux/dto/Edition";
 
 export const getPhaseLabel = (article: Article) => {
     let phaseLabel = '';
@@ -30,3 +31,17 @@ export const getPhaseLabel = (article: Article) => {
     }
     return phaseLabel;
 }
+
+export const getEditionPhaseLabel = (edition: Edition) => {
+    switch (edition.phase) {
+        case 'RELECTURE': {
+            return 'Période de relecture des articles';
+        }
+        case 'CAMERA_READY': {
+            return 'Camera Ready';
+        }
+        case 'PUBLISHED': {
+            return 'Publiée';
+        }
+    }
+};

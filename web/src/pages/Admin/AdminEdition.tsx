@@ -1,11 +1,16 @@
 import {useNavigate, useParams} from "react-router-dom";
 import {useAppDispatch, useAppSelector} from "../../redux/store";
-import {useEffect} from "react";
-import {getEditionArticles, getEditions} from "../../redux/features/edition/edition-slice";
-import {Card, CardContent, CardHeader} from "@mui/material";
+import {useCallback, useEffect} from "react";
+import {
+    getEditionArticles,
+    getEditions,
+    publishEdition,
+    startEditionCameryReadyPhase
+} from "../../redux/features/edition/edition-slice";
+import {Button, Card, CardContent, CardHeader} from "@mui/material";
 import {DataGrid} from "@mui/x-data-grid";
 import dayjs from "dayjs";
-import {getPhaseLabel} from "../../utils/phase";
+import {getEditionPhaseLabel, getPhaseLabel} from "../../utils/phase";
 
 
 export const AdminEdition = () => {
@@ -24,6 +29,16 @@ export const AdminEdition = () => {
         }
     }, [dispatch, edition]);
 
+    const startCameraReady = useCallback(() => {
+        if (!edition) return;
+        dispatch(startEditionCameryReadyPhase(edition.id));
+    }, [dispatch, edition]);
+
+    const publish = useCallback(() => {
+        if (!edition) return;
+        dispatch(publishEdition(edition.id));
+    }, [dispatch, edition])
+
     if (!edition) return null;
 
 
@@ -34,6 +49,15 @@ export const AdminEdition = () => {
                     title={edition.name}
                 />
                 <CardContent>
+                    <h3>Phase: {getEditionPhaseLabel(edition)}</h3>
+                    {
+                        edition.phase === 'RELECTURE' ? (
+                            <Button onClick={startCameraReady} variant='contained'>Lancer la phase de Camera
+                                Ready</Button>
+                        ) : edition.phase === 'CAMERA_READY' ? (
+                            <Button onClick={publish} variant='contained'>Publier l'édition</Button>
+                        ) : null
+                    }
                     <h3>Articles</h3>
                     <div style={{height: '700px', margin: 20}}>
                         {

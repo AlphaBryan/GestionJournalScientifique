@@ -57,6 +57,16 @@ export const addArticle = createAsyncThunk(
   }
 );
 
+export const addVersion = createAsyncThunk(
+    'articles/add-version',
+    async (request: { file: File, articleId: number }) => {
+        const data = new FormData();
+        data.append('file', request.file);
+        const versionRes = await httpJson(handleHttpErrors(post(`/articles/${request.articleId}/versions`, data, {contentType: 'noJson'})));
+        return versionRes;
+    }
+)
+
 export const getCurrentAuthorArticles = createAsyncThunk(
   "articles/get-current-author",
   async (_, { getState }) => {
@@ -123,18 +133,26 @@ export const articleSlice = createSlice({
       state.createdArticle = undefined;
     },
   },
-  extraReducers(builder) {
-    builder.addCase(addArticle.fulfilled, (state, action) => {
-      state.createdArticle = action.payload;
-    });
-    builder.addCase(getCurrentAuthorArticles.fulfilled, (state, action) => {
-      state.authUserArticles = action.payload;
-    });
-    builder.addCase(getCommitteeArticles.fulfilled, (state, action) => {
+
+    extraReducers(builder) {
+        builder.addCase(addArticle.fulfilled, (state, action) => {
+            state.createdArticle = action.payload;
+        });
+        builder.addCase(getCurrentAuthorArticles.fulfilled, (state, action) => {
+            state.authUserArticles = action.payload;
+        });
+        builder.addCase(setArticleCommittee.fulfilled, (state, action) => {
+        });
+        builder.addCase(getCommitteeArticles.fulfilled, (state, action) => {
       state.committeeArticles = action.payload;
     });
-    builder.addCase(setArticleCommittee.fulfilled, (state, action) => {});
-  },
+        builder.addCase(addVersion.fulfilled, (state, action) => {
+            const article = state.authUserArticles.find(a => a.id === action.payload.id);
+            if (article) {
+                article.versions = action.payload.versions;
+            }
+        })
+    }
 });
 
 export const articleActions = articleSlice.actions;
