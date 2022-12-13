@@ -18,7 +18,7 @@ const Screen = (props: Props) => {
 
   useEffect(() => {
     dispatch(getCommittee(committeeId));
-  }, [dispatch]);
+  }, []);
 
   return (
     <div>

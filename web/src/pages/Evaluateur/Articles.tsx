@@ -9,19 +9,53 @@ import FormLabel from "@mui/material/FormLabel";
 import RadioGroup from "@mui/material/RadioGroup";
 import Radio from "@mui/material/Radio";
 import { useLocation } from "react-router-dom";
+import { useAppDispatch, useAppSelector } from "../../redux/store";
+import { evaluateArticle } from "../../redux/features/article/article-slice";
 
 type Props = {};
 
 const Screen = (props: Props) => {
+  const dispatch = useAppDispatch();
   const location = useLocation();
   const article = location.state.data;
-  console.log(article);
-
-  const [status, setStatus] = React.useState("accepte");
+  const [status, setStatus] = React.useState("non");
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setStatus((event.target as HTMLInputElement).value);
   };
+
+  const [rate, setRate] = React.useState("");
+  const [comment, setComment] = React.useState("");
+
+  const sendData = async () => {
+    var error = false;
+    if (rate === "") {
+      alert("Veuillez remplir le champ note");
+      error = true;
+    }
+
+    if (parseInt(rate) < 0 || parseInt(rate) > 3) {
+      alert("Veuillez remplir le champ note avec une valeur entre 0 et 3");
+      error = true;
+    }
+
+    if (error == false) {
+      const data = {
+        articleId: article.id,
+        versionId: article.versions[0].id,
+        comment: comment,
+        isCommentMajor: status === "oui" ? true : false,
+        rate: parseInt(rate),
+      };
+      await dispatch(evaluateArticle(data));
+      alert("Votre évaluation a été envoyée avec succès");
+    }
+  };
+
+  const labelCategories: any = [];
+  article.categories.forEach((category: any) => {
+    labelCategories.push(category.label);
+  });
 
   return (
     <div>
@@ -51,7 +85,7 @@ const Screen = (props: Props) => {
               id="outlined-read-only-input"
               multiline
               label="Categories"
-              defaultValue={article.categories.join(", ")}
+              defaultValue={labelCategories}
               InputProps={{
                 readOnly: true,
               }}
@@ -62,7 +96,7 @@ const Screen = (props: Props) => {
             <TextField
               id="outlined-read-only-input"
               label="Date"
-              defaultValue={article.creation_date}
+              defaultValue={article.creationDate}
               InputProps={{
                 readOnly: true,
               }}
@@ -85,13 +119,13 @@ const Screen = (props: Props) => {
       <h4 style={{ marginTop: "5%" }}> &#9733; Auteurs </h4>
 
       <Box sx={{ flexGrow: 1 }}>
-        {article.author.map((auteur: any, index: any) => (
+        {article.authors.map((author: any, index: any) => (
           <Grid key={index} container spacing={2}>
             <Grid item xs={6} md={8}>
               <TextField
                 id="outlined-read-only-input"
                 label={`Auteur ${index + 1}`}
-                defaultValue={auteur}
+                defaultValue={author.firstName + " " + author.lastName}
                 InputProps={{
                   readOnly: true,
                 }}
@@ -127,32 +161,34 @@ const Screen = (props: Props) => {
           />
         </Box>
         <Box sx={{}}>
-          <h4 style={{ marginTop: "5%", marginBottom: "4%" }}>
+          <h4 style={{ marginTop: "5%", marginBottom: "2%" }}>
             {" "}
-            &#9733; Appréciation{" "}
+            &#9733; Appréciation
           </h4>
-          <FormControl>
-            <RadioGroup
-              row
-              aria-labelledby="demo-controlled-radio-buttons-group"
-              name="controlled-radio-buttons-group"
-              value={status}
-              onChange={handleChange}
-            >
-              <FormControlLabel
-                value="accepte"
-                control={<Radio />}
-                label="Accepté"
-              />
-              <FormControlLabel
-                value="refuse"
-                control={<Radio />}
-                label="Refusé"
-              />
-            </RadioGroup>
-          </FormControl>
+          <h5
+            style={{ marginTop: "1%", marginBottom: "0%", marginLeft: "1.5%" }}
+          >
+            {" "}
+            &#9864; Quel note donnez vous à cette article ?
+          </h5>
+          <Box sx={{ marginBottom: "2%", marginLeft: "1.5%" }}>
+            <TextField
+              id="outlined-multiline-static"
+              type="number"
+              label="Donner une note"
+              rows={4}
+              placeholder="Donner une note entre 0 et 3"
+              sx={{ width: "50%" }}
+              value={rate}
+              onChange={(e) => setRate(e.target.value)}
+            />
+          </Box>
         </Box>
-        <Box sx={{ marginTop: "5%" }}>
+        <Box sx={{ marginTop: "0%", marginLeft: "1.5%" }}>
+          <h5 style={{ marginTop: "1%", marginBottom: "0%" }}>
+            {" "}
+            &#9864; Avez vous des commentaires ?
+          </h5>
           <TextField
             id="outlined-multiline-static"
             label="Commentaire"
@@ -160,9 +196,27 @@ const Screen = (props: Props) => {
             rows={4}
             placeholder="Ecrire un commentaire"
             sx={{ width: "90%" }}
+            value={comment}
+            onChange={(e) => setComment(e.target.value)}
           />
         </Box>
       </Box>
+      <h5 style={{ marginTop: "3%", marginBottom: "0%", marginLeft: "1.5%" }}>
+        {" "}
+        &#9864; Est ce un commentaire majeur ?
+      </h5>
+      <FormControl sx={{ marginLeft: "1.5%" }}>
+        <RadioGroup
+          row
+          aria-labelledby="demo-controlled-radio-buttons-group"
+          name="controlled-radio-buttons-group"
+          value={status}
+          onChange={handleChange}
+        >
+          <FormControlLabel value="oui" control={<Radio />} label="Oui" />
+          <FormControlLabel value="non" control={<Radio />} label="Non" />
+        </RadioGroup>
+      </FormControl>
       <div>
         <Button
           variant="contained"
@@ -173,6 +227,7 @@ const Screen = (props: Props) => {
             marginBottom: "5%",
             backgroundColor: "#72bcd4",
           }}
+          onClick={sendData}
         >
           Envoyer l'évaluation
         </Button>
