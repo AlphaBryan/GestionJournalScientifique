@@ -1,45 +1,137 @@
-import React from "react";
+import React, { useEffect } from "react";
+import { Box, Button, Typography } from "@mui/material";
+import { DataGrid, GridColDef, GridValueGetterParams } from "@mui/x-data-grid";
+import { useNavigate } from "react-router-dom";
+import { useAppDispatch, useAppSelector } from "../../redux/store";
+import {
+  getCommitteeArticles,
+} from "../../redux/features/article/article-slice";
 
 type Props = {};
 
 const Screen = (props: Props) => {
-    const articles = [
-        {
-            title: "À quel âge les enfants commencent-ils à apprécier l'humour?",
-            auteur: "Bryan Mevo",
-            date: "Juin 2019",
-            categories: ["Humour"],
-            description:
-                "Étonnamment tôt, selon une enquête menée auprès de 700 parents dans différents pays.",
-            evaluation: "Accepté",
-        },
-        {
-            title: "Peut-on se moquer de tout? et autres questions sur la satire",
-            auteur: "Bryan Mevo",
-            date: "Juin 2021",
-            categories: ["Humour"],
-            description:
-                "En effet, il faut tout d’abord considérer que le processus de conception n’est que l’une des composantes du processus général de production qui peut aller de la recherche à la mise en service ou à l’utilisation d’un produit.",
-        },
-    ];
+  const navigate = useNavigate();
+  const dispatch = useAppDispatch();
 
-    return (
-        <div>
-            <div>
-                <h1 style={{marginTop: "5%"}}> &#9746; Articles Évaluées </h1>
-            </div>
-            {/*{articles.map((article, index) => (
-        <ArticleCard key={index} article={article} />
-      ))}*/}
-        </div>
-    );
+  const articles: any = useAppSelector(
+    (state) => state.article?.committeeArticles
+  );
+  const idCommitee = useAppSelector(
+    (state) => state.auth.authUser?.committeeId
+  );
+
+  useEffect(() => {
+    dispatch(getCommitteeArticles(idCommitee));
+  }, []);
+
+
+  const columns: GridColDef[] = [
+    {
+      field: "id",
+      headerName: "ID",
+      headerClassName: "",
+      width: 90,
+      align: "center",
+      headerAlign: "center",
+    },
+    {
+      field: "title",
+      headerName: "Title",
+      width: 500,
+      editable: false,
+      headerAlign: "center",
+      align: "center",
+    },
+    {
+      field: "authors",
+      headerName: "Authors",
+      width: 300,
+      editable: false,
+      headerAlign: "center",
+      align: "center",
+      renderCell: (params) => {
+        return (
+          <>
+            {params.row.authors.map((author: any, index: any) => (
+              <Typography
+                key={index}
+                sx={{ fontSize: "100%" }}
+                textAlign="center"
+              >
+                {author.firstName + " " + author.lastName}, &nbsp;
+              </Typography>
+            ))}
+          </>
+        );
+      },
+    },
+    {
+      field: "creationDate",
+      headerName: "Date de création",
+      type: "number",
+      width: 150,
+      editable: false,
+      headerAlign: "center",
+      align: "center",
+    },
+    {
+      field: "phase",
+      headerName: "Phase",
+      type: "number",
+      width: 150,
+      editable: false,
+      headerAlign: "center",
+      align: "center",
+    },
+    {
+      field: "Action",
+      headerName: "",
+      sortable: false,
+      renderCell: (params) => {
+        return (
+          <>
+            <Box sx={{ width: "100%" }}>
+              <Button
+                onClick={() => {
+                  navigate("/Article", { state: { data: params.row } });
+                }}
+              >
+                <Typography sx={{ fontSize: "150%" }} textAlign="center">
+                  &#10530;
+                </Typography>
+              </Button>
+            </Box>
+          </>
+        );
+      },
+    },
+  ];
+
+  return (
+    <div>
+      <div>
+        <h1 style={{ marginTop: "5%" }}> &#9746; Vos évaluations </h1>
+      </div>
+      <div style={{ height: "700px", margin: 20 }}>
+        <DataGrid
+          rows={articles}
+          columns={columns}
+          pageSize={5}
+          rowsPerPageOptions={[5]}
+          checkboxSelection
+          disableSelectionOnClick
+          experimentalFeatures={{ newEditingApi: false }}
+        />
+      </div>
+    </div>
+  );
 };
 const index = () => {
-    return (
-        <div>
-            <Screen/>
-        </div>
-    );
+  return (
+    <div>
+      <Screen />
+    </div>
+  );
 };
 
 export default index;

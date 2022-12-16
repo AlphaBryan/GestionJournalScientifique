@@ -20,24 +20,11 @@ export default function EvaluateurCard(props: Props) {
         marginLeft: "5%",
         marginTop: "2%",
         marginBottom: "2%",
-        paddingBottom: "2%",
       }}
     >
       <CardContent>
         <Typography gutterBottom variant="h5" component="div">
-          {evaluateur.nom}
-        </Typography>
-        <Typography
-          gutterBottom
-          variant="caption"
-          component="div"
-          sx={{ fontWeight: 900 }}
-        >
-          Membre depuis {evaluateur.membresDepuis} - {" "}
-          {evaluateur.nombresEvaluationDonnees} évaluations Données
-        </Typography>
-        <Typography variant="body2" color="text.secondary">
-          {evaluateur.email}
+           {evaluateur.firstName} {evaluateur.lastName}
         </Typography>
       </CardContent>
     </Card>
