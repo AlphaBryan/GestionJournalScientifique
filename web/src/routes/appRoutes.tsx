@@ -42,7 +42,7 @@ const AuteurRoutes: RouteType[] = [
     element: <ArticleNouveau />,
     state: "articleNouveau",
     sidebarProps: {
-      displayText: "Nouveau Article",
+      displayText: "Nouvel Article",
       icon: <FileDownloadOutlinedIcon />,
     },
   },

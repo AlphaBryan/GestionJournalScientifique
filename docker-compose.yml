@@ -2,22 +2,19 @@ version: '3'
 
 services:
   api:
-    image: maven:3-openjdk-18
     container_name: api
-    working_dir: /app
-    command: ./mvnw spring-boot:run
-    volumes:
-      - ./api:/app
+    build:
+      context: ./api
     networks:
       - uqam-net
     ports:
       - 7800:7800
+    depends_on:
+      - database
   front:
-    image: node:18-alpine
     container_name: front
-    working_dir: /app
-    volumes:
-      - ./web:/app
+    build:
+      context: ./web
     ports:
       - 3000:3000
   database:

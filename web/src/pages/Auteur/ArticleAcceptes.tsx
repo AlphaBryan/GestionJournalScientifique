@@ -20,7 +20,7 @@ const ArticleAcceptes = (props: Props) => {
     return (
         <div>
             <div>
-                <h1 style={{marginTop: "5%"}}> &#9745; Article acceptés </h1>
+                <h1 style={{marginTop: "5%"}}> &#9745; Mes Articles </h1>
             </div>
             {articles.map((article) => (
                 <ArticleCard key={article.id} article={article}
